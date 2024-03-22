@@ -189,7 +189,6 @@ let vec2_mult_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
 *)
 (**@author Constain*)
 let vec2_mult_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
-  (* Itération 1 *)
   {dx= a.dx * x; dy= a.dy * y} 
 ;;
 
@@ -201,9 +200,24 @@ type t_ball = unit;;
 (* Itération 2 *)
 type t_paddle = unit;;
 
+(*t_camlworld est le tableau des briques avec les coordonnées correspondante*)
+﻿let t_camlworld (p_nb_line , p_nb_col : int * int)
+: (int * int) array array =
+let l_mat : (int * int) array array =
+mat_make (p_nb_line , p_nb_col , (0, 0))
+in
+for i = 0 to (p_nb_line - 1)
+do
+for j = 0 to (p_nb_col -1)
+do
+l_mat.(i).(j) <- (i, j)
+done
+done ;
+l_mat
+;;
 
 (* Itération 1, 2, 3 et 4 *)
-type t_camlbrick = unit
+type t_camlbrick ={ BK : t_brick_kind ; color : t_brick_color ; pos : t_camlworld ; param : t_camlbrick_param}
 ;;
 
 
