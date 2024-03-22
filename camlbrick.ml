@@ -219,7 +219,7 @@ l_mat
 ;;
 
 (* Itération 1, 2, 3 et 4  *)
-type t_camlbrick ={ bk : t_brick_kind ; color : t_brick_color ; pos : t_camlworld ; param : t_camlbrick_param}
+type t_camlbrick ={ bk : t_brick_kind ; color : t_camlbrick_color ; pos : t_camlworld ; param : t_camlbrick_param}
 ;;
 
 
@@ -313,11 +313,19 @@ scd (t_camlbrick.pos) := j
 			then BK_double
 			else BK_bonus
 ;;
-;;
-
+(* brick_hit modifie le type de briques si elle se font toucher 
+@author Chauveau *)
 let brick_hit(game, i, j : t_camlbrick * int * int)  : t_brick_kind = 
+if game.bk = BK_block
+  then BK_block
+else
+  if game.bk = BK_simple
+    then BK_empty
+else
+  if game.bk = BK_double
+    then BK_simple
+else BK_empty
   (* Itération 1 *)
-  BK_empty
 ;;
 
 (* aux_brick_color donne une couleur selon le type de brique
