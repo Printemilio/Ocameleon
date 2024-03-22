@@ -200,8 +200,10 @@ type t_ball = unit;;
 (* Itération 2 *)
 type t_paddle = unit;;
 
+type t_camlworld = int*int ;;
+
 (*t_camlworld est le tableau des briques avec les coordonnées correspondante*)
-﻿let t_camlworld (p_nb_line , p_nb_col : int * int)
+﻿let t_caml_table (p_nb_line , p_nb_col : int * int)
 : (int * int) array array =
 let l_mat : (int * int) array array =
 mat_make (p_nb_line , p_nb_col , (0, 0))
@@ -216,8 +218,8 @@ done ;
 l_mat
 ;;
 
-(* Itération 1, 2, 3 et 4 *)
-type t_camlbrick ={ BK : t_brick_kind ; color : t_brick_color ; pos : t_camlworld ; param : t_camlbrick_param}
+(* Itération 1, 2, 3 et 4  *)
+type t_camlbrick ={ bk : t_brick_kind ; color : t_brick_color ; pos : t_camlworld ; param : t_camlbrick_param}
 ;;
 
 
