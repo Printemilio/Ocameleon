@@ -319,8 +319,24 @@ let brick_hit(game, i, j : t_camlbrick * int * int)  : t_brick_kind =
   (* Itération 1 *)
   BK_empty
 ;;
+
+(* aux_brick_color donne une couleur selon le type de brique
+@author *)
+
+let aux_brick_color(brick : t_brick_kind) : t_camlbrick_color =
+  if brick = BK_block
+    then BLACK
+else
+  if brick = BK_simple
+    then GREEN
+else
+  if brick = BK_double
+    then ORANGE
+else GRAY
+
 (*  let_brick_color va chercher les coordonnées de la brique pour assigner une couleur
 @author Chauveau *)
+
 let brick_color(game,i,j : t_camlbrick * int * int) : t_camlbrick_color = 
     fst(t_camlbrick.pos) := i
 	scd(t_camlbrick.pos) := j
