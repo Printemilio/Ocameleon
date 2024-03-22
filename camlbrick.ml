@@ -248,10 +248,11 @@ let make_camlbrick_param() : t_camlbrick_param = {
   Cette fonction extrait le paramétrage d'un jeu à partir du jeu donné en argument.
   @param game jeu en cours d'exécution.
   @return Renvoie le paramétrage actuel.
+  @author Constain et Chauveau
   *)
 let param_get(game : t_camlbrick) : t_camlbrick_param =
+  game.param
   (* Itération 1 *)
-  make_camlbrick_param()
 ;;
 
 (**
@@ -295,22 +296,44 @@ let string_of_gamestate(game : t_camlbrick) : string =
   (* Itération 1,2,3 et 4 *)
   "INCONNU"
 ;;
+(* brick_get va donner le type de briques en fonction de sa coordonnées
+@author Chauveau*)
 
 let brick_get(game, i, j : t_camlbrick * int * int)  : t_brick_kind =
   (* Itération 1 *)
-  if i = 1 && j = 1
-  then BK_empty
-  else BK_simple 
+fst (t_camlbrick.pos) := i
+scd (t_camlbrick.pos) := j
+	if i = 0 && j = 0
+	then BK_empty
+	else
+		if i = 0 && j = 1
+		then BK_simple
+		else
+			if i = 1 && j = 1
+			then BK_double
+			else BK_bonus
+;;
 ;;
 
 let brick_hit(game, i, j : t_camlbrick * int * int)  : t_brick_kind = 
   (* Itération 1 *)
   BK_empty
 ;;
-
+(*  let_brick_color va chercher les coordonnées de la brique pour assigner une couleur
+@author Chauveau *)
 let brick_color(game,i,j : t_camlbrick * int * int) : t_camlbrick_color = 
-  (* Itération 1 *)
-  ORANGE
+    fst(t_camlbrick.pos) := i
+	scd(t_camlbrick.pos) := j
+	if i = 0 && j = 0
+	then BLACK
+	else
+		if i = 0 && j = 1
+		then ORANGE
+		else
+			if i = 1 && j = 1
+			then RED
+			else PURPLE
+;;
 ;;
 
 
