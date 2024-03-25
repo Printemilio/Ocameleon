@@ -216,7 +216,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     (
         for i = 0 to (p_nb_line - 1) do
             for j = 0 to (p_nb_col -1) do
-                l_mat.(i).(j) <- int_to_type(rand_int(5))
+                l_mat.(i).(j) <- int_to_type(Random.int(5))
             done
         done ;
         l_mat
@@ -224,7 +224,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     ;;
     
     (* Itération 1, 2, 3 et 4  *)
-    type t_camlbrick ={ (* brick_type_list : t_brick_kind list ; brick_color_list : t_camlbrick_color list;*) brick_wall : t_camlworld ; param : t_camlbrick_param}
+    type t_camlbrick ={brick_wall : t_camlworld ; param : t_camlbrick_param}
     ;;
     
     
@@ -266,14 +266,11 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       @return Renvoie un jeu correctement initialisé
     *)
     let make_camlbrick() : t_camlbrick = 
-      (* Itération 1, 2, 3 et 4 *)
+      (* Itération 1, 2, 3 et 4 *) (*A FINIR*)
       (
-        { 
-          
-          brick_wall : mat_make(...) ; 
-          param = make_camlbrick_param()
-          }
-
+        {
+          brick_wall : mat_make(20,30) ; 
+          param = make_camlbrick_param() }
       )
     ;;
     
@@ -312,9 +309,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     @author Chauveau*)
     
     let brick_get(game, i, j : t_camlbrick * int * int)  : t_brick_kind =
-      (* Itération 1 *)
-    fst (t_camlbrick.pos) := i ;
-    scd (t_camlbrick.pos) := j in
+      (* Itération 1 *) (*A FINIR*)
+    fst (t_camlbrick.brick_wall) := i ;
+    scd (t_camlbrick.brick_wall) := j in
       if i = 0 && j = 0
       then BK_empty
       else
@@ -337,7 +334,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       if game.bk = BK_double
         then BK_simple
     else BK_empty
-      (* Itération 1 *)
+      (* Itération 1 *)(*A FINIR*)
     ;;
     
     (* aux_brick_color donne une couleur selon le type de brique
@@ -355,7 +352,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     else GRAY
     ;;
     (*  let_brick_color va chercher les coordonnées de la brique pour assigner une couleur
-    @author Chauveau *)
+    @author Chauveau *)(*A FINIR*)
     
     let brick_color(game,i,j : t_camlbrick * int * int) : t_camlbrick_color = 
       aux_brick_color(game.brick_wall.(i).(j))
