@@ -48,46 +48,63 @@ let test_brick_hit1 () : unit =
 ;;
 
 (*brick_color*)
+let init_game() : t_camlbrick = 
+  let game_test : t_camlbrick = {           
+          brick_wall : mat_make(...) ; 
+          param = make_camlbrick_param();
+          } in
+  (
+    brick_wall.(1).(1) <- BK_block ;
+    brick_wall.(0).(1) <- BK_simple ;
+    brick_wall.(1).(0) <- BK_double ;
+    brick_wall.(0).(0) <- Bk_empty ;
+
+  );
+  brick_wall
+;;
+
 
 let test_brick_color1 () : unit =
-  let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(1,1)", (1,1)) in
-  assert_equals_result_m ("result_brick_color1", RED, l_res)
+  let game : t_camlbrick = int_game() in
+  let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(1,1)", (game,1,1)) in
+  assert_equals_result_m ("result_brick_color1", BLACK, l_res)
 ;;
 
 let test_brick_color2 () : unit =
+  (***********************)
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(0,1)", (0,1)) in
-  assert_equals_result_m ("result_brick_color2", ORANGE, l_res)
+  assert_equals_result_m ("result_brick_color2", GREEN, l_res)
 ;;
 
 let test_brick_color3 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(1,0)", (1,0)) in
-  assert_equals_result_m ("result_brick_color3", PURPLE, l_res)
+  assert_equals_result_m ("result_brick_color3", ORANGE, l_res)
 ;;
 
 let test_brick_color4 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(0,0)", (0,0)) in
-  assert_equals_result_m ("result_brick_color4", BLACK, l_res)
+  assert_equals_result_m ("result_brick_color4", GREY, l_res)
 ;;
 
 (*aux_brick_color*)
 
 let test_aux_brick_color1 () : unit =
-  let l_res : t_brick_kind t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_block)", (BK_block)) in
+  let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_block)", (BK_block)) in
   assert_equals_result_m ("result_aux_brick_color1", BLACK, l_res)
 ;;
 
 let test_aux_brick_color2 () : unit =
-  let l_res : t_brick_kind t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_simple)", (BK_simple)) in
+  let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_simple)", (BK_simple)) in
   assert_equals_result_m ("result_aux_brick_color2", GREEN, l_res)
 ;;
 
 let test_aux_brick_color3 () : unit =
-  let l_res : t_brick_kind t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_double)", (BK_double)) in
+  let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_double)", (BK_double)) in
   assert_equals_result_m ("result_aux_brick_color3", ORANGE, l_res)
 ;;
 
 let test_aux_brick_color4 () : unit =
-  let l_res : t_brick_kind t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_empty)", (BK_empty)) in
+  let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_empty)", (BK_empty)) in
   assert_equals_result_m ("result_aux_brick_color4", GRAY, l_res)
 ;;
 (*****************************************)
