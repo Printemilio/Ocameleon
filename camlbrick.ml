@@ -182,7 +182,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     (**@author Constain*)
     let vec2_mult_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
       {dx= a.dx * x; dy= a.dy * y} 
-    ;;
+    ;;est_report();;
     
     
     
@@ -199,21 +199,24 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       then failwith("erreur mat_make ; parametre invalide")
       else Array.make_matrix n m v 
     ;;    
-    
+
+    let int_to_type(p_num : int) : t_brick_kind =
+        if p_num = 0 then BK_empty
+        else if ...
+        ;;
+        
     (*t_camlworld est le tableau des briques avec les coordonnées correspondante*)
-    let t_caml_table (p_nb_line , p_nb_col : int * int)
-    : (int * int) array array =
-    let l_mat : (int * int) array array =
-    mat_make (p_nb_line , p_nb_col , (0, 0))
+    let t_caml_table (p_nb_line , p_nb_col : int * int)    : t_brick_kind array array =
+    let l_mat : t_brick_kind array array = mat_make (p_nb_line , p_nb_col , BK_empty)
     in
-    for i = 0 to (p_nb_line - 1)
-    do
-    for j = 0 to (p_nb_col -1)
-    do
-    l_mat.(i).(j) <- (i, j)
-    done
-    done ;
-    l_mat
+    (
+        for i = 0 to (p_nb_line - 1) do
+            for j = 0 to (p_nb_col -1) do
+                l_mat.(i).(j) <- int_to_type(rand_int(5))
+            done
+        done ;
+        l_mat
+    )
     ;;
     
     (* Itération 1, 2, 3 et 4  *)
