@@ -202,7 +202,11 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
 
     let int_to_type(p_num : int) : t_brick_kind =
         if p_num = 0 then BK_empty
-        else if ...
+        else if p_num = 1 then BK_simple
+        else if p_num = 2 then BK_double
+        else if p_num = 3 then BK_block
+        else if p_num = 4 then BK_bonus
+        else failwith ("erreur")
         ;;
         
     (*t_camlworld est le tableau des briques avec les coordonnées correspondante*)
