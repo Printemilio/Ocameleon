@@ -191,8 +191,6 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     
     (* Itération 2 *)
     type t_paddle = unit;;
-    
-    type t_camlworld = int*int ;;
 
     let mat_make(n, m, v : int * int * 'a) : 'a array array = 
       if n < 0 || m < 0
@@ -208,9 +206,8 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
         else if p_num = 4 then BK_bonus
         else failwith ("erreur")
         ;;
-        
-    (*t_camlworld est le tableau des briques avec les coordonnées correspondante*)
-    let t_caml_table (p_nb_line , p_nb_col : int * int)    : t_brick_kind array array =
+    type t_caml_table = (t_brick_kind array array) ;;
+    let t_caml_table (p_nb_line , p_nb_col : int * int)    : t_caml_table =
     let l_mat : t_brick_kind array array = mat_make (p_nb_line , p_nb_col , BK_empty)
     in
     (
@@ -224,7 +221,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     ;;
     
     (* Itération 1, 2, 3 et 4  *)
-    type t_camlbrick ={brick_wall : t_camlworld ; param : t_camlbrick_param}
+    type t_camlbrick ={brick_wall : t_caml_table ; param : t_camlbrick_param}
     ;;
     
     
@@ -266,10 +263,10 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       @return Renvoie un jeu correctement initialisé
     *)
     let make_camlbrick() : t_camlbrick = 
-      (* Itération 1, 2, 3 et 4 *) (*A FINIR*)
+      (* Itération 1, 2, 3 et 4 *)
       (
         {
-          brick_wall : mat_make(20,30) ; 
+          brick_wall = mat_make(20,30,BK_empty) ; 
           param = make_camlbrick_param() }
       )
     ;;
@@ -309,32 +306,22 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     @author Chauveau*)
     
     let brick_get(game, i, j : t_camlbrick * int * int)  : t_brick_kind =
-      (* Itération 1 *) (*A FINIR*)
-    fst (t_camlbrick.brick_wall) := i ;
-    scd (t_camlbrick.brick_wall) := j in
-      if i = 0 && j = 0
-      then BK_empty
-      else
-        if i = 0 && j = 1
-        then BK_simple
-        else
-          if i = 1 && j = 1
-          then BK_double
-           else BK_bonus
+      (* Itération 1 *) 
+     (game.brick_wall).(i).(j)
     ;;
     (* brick_hit modifie le type de briques si elle se font toucher 
     @author Chauveau *)
     let brick_hit(game, i, j : t_camlbrick * int * int)  : t_brick_kind = 
-    if game.bk = BK_block
+    if (game.brick_wall).(i).(j) = BK_block
       then BK_block
     else
-      if game.bk = BK_simple
+      if (game.brick_wall).(i).(j) = BK_simple
         then BK_empty
     else
-      if game.bk = BK_double
+      if (game.brick_wall).(i).(j) = BK_double
         then BK_simple
     else BK_empty
-      (* Itération 1 *)(*A FINIR*)
+      (* Itération 1 *)
     ;;
     
     (* aux_brick_color donne une couleur selon le type de brique
@@ -352,7 +339,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     else GRAY
     ;;
     (*  let_brick_color va chercher les coordonnées de la brique pour assigner une couleur
-    @author Chauveau *)(*A FINIR*)
+    @author Chauveau *)
     
     let brick_color(game,i,j : t_camlbrick * int * int) : t_camlbrick_color = 
       aux_brick_color(game.brick_wall.(i).(j))
