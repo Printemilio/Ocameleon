@@ -15,6 +15,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
 @version 1
 *)
 
+(*********************************** TYPES and GLOBAL VARIABLES *******************************************************************************************)
 (** Compteur utilisé en interne pour afficher le numéro de la frame du jeu vidéo. 
     Vous pouvez utiliser cette variable en lecture, mais nous ne devez pas modifier
     sa valeur! *)
@@ -109,6 +110,17 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     type t_vec2 = {dx: int ; dy: int}
     ;;
     
+    type t_caml_table = (t_brick_kind array array) ;;
+    
+    (* Itération 1, 2, 3 et 4  *)
+    type t_camlbrick ={
+      brick_wall : t_caml_table ; 
+      param : t_camlbrick_param
+      }
+    ;;
+
+
+    (************************ VECTOR PART ***************************************************************************)
     (**
       Cette fonction permet de créer un vecteur 2D à partir de deux entiers.
       Les entiers représentent la composante en X et en Y du vecteur.
@@ -159,8 +171,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       {dx= a.dx + x; dy= a.dy + y}  
     ;;
     
-    K_block
-      @param a premier vecteur
+      (**@param a premier vecteur
       @param b second vecteur
       @return Renvoie un vecteur qui résulte de la multiplication des composantes. 
     *)
@@ -182,9 +193,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     (**@author Constain*)
     let vec2_mult_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
       {dx= a.dx * x; dy= a.dy * y} 
-    ;;est_report();;
+    ;;
     
-    
+    (************************  END VECTOR PART ***************************************************************************)
     
     (* Itération 2 *)
     type t_ball = unit;;
@@ -206,8 +217,8 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
         else if p_num = 4 then BK_bonus
         else failwith ("erreur")
         ;;
-    type t_caml_table = (t_brick_kind array array) ;;
-    let t_caml_table (p_nb_line , p_nb_col : int * int)    : t_caml_table =
+    
+    let caml_table (p_nb_line , p_nb_col : int * int) : t_caml_table =
     let l_mat : t_brick_kind array array = mat_make (p_nb_line , p_nb_col , BK_empty)
     in
     (
@@ -220,9 +231,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     )
     ;;
     
-    (* Itération 1, 2, 3 et 4  *)
-    type t_camlbrick ={brick_wall : t_caml_table ; param : t_camlbrick_param}
-    ;;
+    
     
     
     (**
@@ -262,8 +271,8 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       Une raquette par défaut et une balle par défaut dans la zone libre.
       @return Renvoie un jeu correctement initialisé
     *)
+    (* Itération 1, 2, 3 et 4 *)
     let make_camlbrick() : t_camlbrick = 
-      (* Itération 1, 2, 3 et 4 *)
       (
         {
           brick_wall = mat_make(20,30,BK_empty) ; 
@@ -544,7 +553,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       print_string(" code=");
       print_int(keyCode);
       print_newline()
-    ;;
+   ;;
     
     (**
       Cette fonction est utilisée par l'interface graphique pour connaitre l'information
