@@ -42,7 +42,6 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       </ul>
     *)
     
-    (**@author Constain et Decaix*)
     type t_camlbrick_param = {
       world_width : int; (** largeur de la zone de dessin des briques *)
       world_bricks_height : int; (** hauteur de la zone de dessin des briques *)
@@ -67,6 +66,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       C'est à dire, l'information qui encode l'absence de brique à un emplacement sur la grille du monde.
       @return Renvoie le type correspondant à la notion de vide.
       @deprecated  Cette fonction est utilisé en interne.    
+      @author Pavel
     *)
     let make_empty_brick() : t_brick_kind = 
       BK_empty
@@ -106,16 +106,45 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     
     
     (* Itération 1 *)
-    (**@author Constain*)
+    (** Type vecteur
+      @author Constain
+    *)
     type t_vec2 = {dx: int ; dy: int}
     ;;
     
+    (** Type table de bricks
+      @author Pavel    
+    *)
     type t_caml_table = (t_brick_kind array array) ;;
+
+    (**
+      
+    *)
+    type t_paddle_position = {x: int ref ; y: int};;
+    type t_caml_table_paddle = (t_paddle_position array array);;
+
+    (* Itération 2 *)
+    type t_ball = unit;;
     
+    (* Itération 2 *)
+    (** Enumeration des differents paramatres necessaire pour construire une raquette
+      @author Constain
+    *)
+    type t_paddle = {
+      paddle_color: t_camlbrick_color ; 
+      paddle_size: t_paddle_size ;
+      paddle_wall: t_caml_table_paddle ;     
+      }
+    ;;
+    
+    (**Type base pour l'ensemble du jeu
+      @author Pavel et Constain
+    *)
     (* Itération 1, 2, 3 et 4  *)
     type t_camlbrick ={
       brick_wall : t_caml_table ; 
-      param : t_camlbrick_param
+      param : t_camlbrick_param ;
+      paddle_track: t_paddle;
       }
     ;;
 
@@ -129,9 +158,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       @param x première composante du vecteur
       @param y seconde composante du vecteur
       @return Renvoie le vecteur dont les composantes sont (x,y).
+      @author Constain
     *)
     
-    (**@author Constain*)
     let make_vec2(x,y : int * int) : t_vec2 = 
       {dx= x ; dy = y}
     ;;
@@ -142,9 +171,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       @param a premier vecteur
       @param b second vecteur
       @return Renvoie un vecteur égale à la somme des vecteurs.
+      @author Constain
     *)
     
-    (**@author Constain*)
     let vec2_add(a,b : t_vec2 * t_vec2) : t_vec2 =
       {dx= a.dx + b.dx ; dy= a.dy + b.dy }
     ;;
@@ -165,8 +194,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       @param x composante en x du second vecteur
       @param y composante en y du second vecteur
       @return Renvoie un vecteur qui est la résultante du vecteur 
+      @author Constain
     *)
-    (**@author Constain*)
+
     let vec2_add_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
       {dx= a.dx + x; dy= a.dy + y}  
     ;;
@@ -174,8 +204,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       (**@param a premier vecteur
       @param b second vecteur
       @return Renvoie un vecteur qui résulte de la multiplication des composantes. 
+      @author Constain
     *)
-    (**@author Constain*)
+
     let vec2_mult(a,b : t_vec2 * t_vec2) : t_vec2 = 
       {dx= a.dx*b.dx; dy= a.dy*b.dy}
     ;;
@@ -188,27 +219,36 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       vec2_mult(a, make_vec2(x,y))
     ;;
       ]}
-        
+      @param a premier vecteur
+      @param x composante en x du second vecteur
+      @param y composante en y du second vecteur
+      @return Renvoie un vecteur qui est la résultante du vecteur 
+      @author Constain 
     *)
-    (**@author Constain*)
+    
     let vec2_mult_scalar(a,x,y : t_vec2 * int * int) : t_vec2 =
       {dx= a.dx * x; dy= a.dy * y} 
     ;;
     
     (************************  END VECTOR PART ***************************************************************************)
     
-    (* Itération 2 *)
-    type t_ball = unit;;
-    
-    (* Itération 2 *)
-    type t_paddle = unit;;
-
+    (** Construction de tableau d'elements 'a
+    @param n nombre de lignes
+    @param n nombre de colonnes
+    @param v element quelconque constituent le tableau
+    @return tableau d'elements 'a
+    @author Emilio
+    *)
     let mat_make(n, m, v : int * int * 'a) : 'a array array = 
       if n < 0 || m < 0
       then failwith("erreur mat_make ; parametre invalide")
       else Array.make_matrix n m v 
     ;;    
 
+    (** Association de type de brick a une entiers
+      @param entiers asocié a la brick
+      @author Pavel
+    *)
     let int_to_type(p_num : int) : t_brick_kind =
         if p_num = 0 then BK_empty
         else if p_num = 1 then BK_simple
@@ -218,6 +258,12 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
         else failwith ("erreur")
         ;;
     
+    (** Creation d'une table bricks
+    @param p_nb_line entiers designant le nombre de lignes
+    @param p_nb_col  entiers designant le nombre de colonnes
+    @return t_caml_table table de bricks
+    @author Pavel
+    *)    
     let caml_table (p_nb_line , p_nb_col : int * int) : t_caml_table =
     let l_mat : t_brick_kind array array = mat_make (p_nb_line , p_nb_col , BK_empty)
     in
@@ -231,9 +277,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     )
     ;;
     
-    
-    
-    
+
     (**
       Cette fonction construit le paramétrage du jeu, avec des informations personnalisable avec les contraintes du sujet.
       Il n'y a aucune vérification et vous devez vous assurer que les valeurs données en argument soient cohérentes.
@@ -253,50 +297,57 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
        time_speed = ref 20;
     }
     ;;
-    
+
     
     (**
       Cette fonction extrait le paramétrage d'un jeu à partir du jeu donné en argument.
       @param game jeu en cours d'exécution.
       @return Renvoie le paramétrage actuel.
-      @author Constain et Chauveau
+      @author Constain et Pavel
       *)
     let param_get(game : t_camlbrick) : t_camlbrick_param =
       game.param
       (* Itération 1 *)
+    ;;
+
+    (**
+      Cette fonction crée une raquette par défaut au milieu de l'écran et de taille normal.  
+      @deprecated Cette fonction est là juste pour le debug ou pour débuter certains traitements de test.
+      @author Constain
+    *)
+
+      (* Itération 2 *) 
+    let make_paddle() : t_paddle =
+      ( let pos: t_caml_table_paddle = mat_make(1,800, { x = ref 400 ; y = 50}) in
+        {
+          paddle_color = RED ;
+          paddle_size = PS_MEDIUM ;
+          paddle_wall = pos}
+      )
     ;;
     
     (**
       Cette fonction crée une nouvelle structure qui initialise le monde avec aucune brique visible.
       Une raquette par défaut et une balle par défaut dans la zone libre.
       @return Renvoie un jeu correctement initialisé
+      @author Constain, Emilio, Pavel et Erwan
     *)
-    (* Itération 1, 2, 3 et 4 *)
+    (* Itération 1, 2, 3 et 4 *) 
+    (*La fonction a un erreur: "Some record fields are undefined: paddle_track"
+      paddle_track est un parametre du type t_camlbrick qui prend en compte la raquette de son jeu*)
     let make_camlbrick() : t_camlbrick = 
       (
         {
           brick_wall = mat_make(20,30,BK_empty) ; 
-          param = make_camlbrick_param() }
+          param = make_camlbrick_param() ;
+          paddle_track = make_paddle()}
       )
-    ;;
-    
-    
-    (**
-      Cette fonction crée une raquette par défaut au milieu de l'écran et de taille normal.  
-      @deprecated Cette fonction est là juste pour le debug ou pour débuter certains traitements de test.
-    *)
-    let make_paddle() : t_paddle =
-      (* Itération 2 *)
-     ()
     ;;
     
     let make_ball(x,y, size : int * int * int) : t_ball =
       (* Itération 3 *)
       ()
     ;;
-    
-    
-    
     
     (**
       Fonction utilitaire qui permet de traduire l'état du jeu sous la forme d'une chaîne de caractère.
@@ -311,15 +362,25 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       (* Itération 1,2,3 et 4 *)
       "INCONNU"
     ;;
-    (* brick_get va donner le type de briques en fonction de sa coordonnées
-    @author Chauveau*)
-    
+
+    (** Donne le type de briques en fonction de sa coordonnées
+      @param game definition du jeu
+      @param i coordonée des abscisse
+      @param j coordonée des ordonée
+      @return renvoit un type de brick selon les coordonées du brick
+      @author Pavel
+    *)
     let brick_get(game, i, j : t_camlbrick * int * int)  : t_brick_kind =
       (* Itération 1 *) 
      (game.brick_wall).(i).(j)
     ;;
-    (* brick_hit modifie le type de briques si elle se font toucher 
-    @author Chauveau *)
+
+    (** Modifie le type de briques si elle se font toucher 
+      @param game definition du jeu
+      @param i coordonée des abscisse
+      @param j coordonée des ordonée
+      @author Pavel
+    *)
     let brick_hit(game, i, j : t_camlbrick * int * int)  : t_brick_kind = 
     if (game.brick_wall).(i).(j) = BK_block
       then BK_block
@@ -333,9 +394,11 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       (* Itération 1 *)
     ;;
     
-    (* aux_brick_color donne une couleur selon le type de brique
-    @author *)
-    
+    (** Donne une couleur selon le type de brique
+      @param brick type de brick qui sera associé
+      @return associe une couleur a chaque type de brick
+      @author Pavel
+    *)    
     let aux_brick_color(brick : t_brick_kind) : t_camlbrick_color =
       if brick = BK_block
         then BLACK
@@ -347,23 +410,34 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
         then ORANGE
     else GRAY
     ;;
-    (*  let_brick_color va chercher les coordonnées de la brique pour assigner une couleur
-    @author Chauveau *)
-    
+
+
+    (** Va chercher les coordonnées de la brique pour assigner une couleur
+      @param game definition du jeu
+      @param i coordonée des abscisse
+      @param j coordonée des ordonée
+      @return execute la fonction aux_brick_color avec les parametres fournis
+      @author Chauveau 
+    *)
     let brick_color(game,i,j : t_camlbrick * int * int) : t_camlbrick_color = 
       aux_brick_color(game.brick_wall.(i).(j))
     ;;
     
-    
-    
+    (** Recupere la coordonée x d'abscisse du coté gauche de la raquette
+    @param game definition du jeu
+    @return la valeur de la coordonée x de la raquette
+    @author Constain
+    *)
+    (*A FINIR, normalement il y a un syntax erreur dans le !x*)
     let paddle_x(game : t_camlbrick) : int= 
       (* Itération 2 *)
-      0
+      (game.paddle_track.hd(paddle_wall.!x))
     ;;
+
     
     let paddle_size_pixel(game : t_camlbrick) : int = 
       (* Itération 2 *)
-      0
+
     ;;
     
     let paddle_move_left(game : t_camlbrick) : unit = 
