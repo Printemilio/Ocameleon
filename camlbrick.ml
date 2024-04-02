@@ -140,11 +140,19 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     (**Type base pour l'ensemble du jeu
       @author Pavel et Constain
     *)
+    type t_caml_world = (int * int) array array;;
+(* t_caml_world est le type qui définit le tableau du monde*) 
+
+type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_x : int ; coordonate_y : int ; speed : t_vec2};;
+  
     (* Itération 1, 2, 3 et 4  *)
     type t_camlbrick ={
       brick_wall : t_caml_table ; 
       param : t_camlbrick_param ;
       paddle_track: t_paddle;
+      world_coordonates : t_caml_world;
+      ball : t_ball ; 
+      ball_list : t_ball list
       }
     ;;
 
@@ -277,6 +285,17 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     )
     ;;
     
+    let make_world (p_nb_line , p_nb_col : int * int) : (int * int) array array =
+    let l_mat : (int * int) array array = mat_make (p_nb_line , p_nb_col , (0, 0))
+    in
+    for i = 0 to (p_nb_line - 1) do
+      for j = 0 to (p_nb_col -1) do
+        l_mat.(i).(j) <- (i, j)
+      done
+    done ;
+    l_mat
+    ;;
+    
 
     (**
       Cette fonction construit le paramétrage du jeu, avec des informations personnalisable avec les contraintes du sujet.
@@ -341,6 +360,8 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
           brick_wall = mat_make(20,30,BK_empty) ; 
           param = make_camlbrick_param() ;
           paddle_track = make_paddle()}
+          ball = {ball_size = BS_MEDIUM; color = WHITE; coordonate_y = 0 ; coordonate_x = 0 ; speed = {dx = 0 ; dy = 0}};
+          ball_list = [];
       )
     ;;
     
@@ -452,33 +473,56 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     
     let has_ball(game : t_camlbrick) : bool =
       (* Itération 2 *)
-      false
+    if List.length(game.ball_list) <= 0
+    then false
+    else true
     ;;
     
     let balls_count(game : t_camlbrick) : int =
       (* Itération 2 *)
-      0
+    List.length(game.ball_list)
     ;;
     
     let balls_get(game : t_camlbrick) : t_ball list = 
       (* Itération 2 *)
-      []
+      game.ball_list
     ;;
     
-    let ball_get(game, i : t_camlbrick * int) : t_ball =
-      (* Itération 2 *)
-      ()
-    ;;
+    let rec ball_get(game, i : t_camlbrick * int) : t_ball =
+      (* Itération 2 *) 
+  if i < 0
+  then failwith ("Erreur ␣ball␣:␣ indice ␣ negatif")
+  else
+  if game.ball_list = []
+  then failwith ("Erreur ␣ball␣:␣ indice ␣en␣ dehors ␣ des␣ bornes")
+  else
+  if i = 0
+  then hd(game.ball_list)
+  else ball_get (tl (), i - 1)
+;;
+ 
     
     let ball_x(game,ball : t_camlbrick * t_ball) : int =
       (* Itération 2 *)
-      0
-    ;;
+if ball.coordonate_y >= 0 && ball.coordonate_y < Array.length game.world_coordonates then
+    if ball.coordonate_x >= 0 && ball.coordonate_x < Array.length game.world_coordonates.(ball.coordonate_y) then
+      (ball.coordonate_x)
+    else
+      failwith "Coordonnée X de la balle en dehors de la taille de la matrice"
+  else
+    failwith "Coordonnée Y de la balle en dehors de la taille de la matrice"
+;;
     
     let ball_y(game, ball : t_camlbrick * t_ball) : int =
       (* Itération 2 *)
-      0
-    ;;
+ if ball.coordonate_y >= 0 && ball.coordonate_y < Array.length game.world_coordonates then
+    if ball.coordonate_x >= 0 && ball.coordonate_x < Array.length game.world_coordonates.(ball.coordonate_y) then
+      (ball.coordonate_y)
+    else
+      failwith "Coordonnée X de la balle en dehors de la taille de la matrice"
+  else
+    failwith "Coordonnée Y de la balle en dehors de la taille de la matrice"
+;;
     
     let ball_size_pixel(game, ball : t_camlbrick * t_ball) : int =
       (* Itération 2 *)
