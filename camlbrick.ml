@@ -130,7 +130,8 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     (** Enumeration des differents paramatres necessaire pour construire une raquette
       @author Constain
     *)
-    type t_paddle = {
+    type t_paddle =
+      {
       paddle_color: t_camlbrick_color ; 
       paddle_size: t_paddle_size ;
       paddle_wall: t_caml_table_paddle ;     
@@ -143,7 +144,7 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     type t_caml_world = (int * int) array array;;
 (* t_caml_world est le type qui définit le tableau du monde*) 
 
-type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_x : int ; coordonate_y : int ; speed : t_vec2};;
+type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_x : int ; coordonate_y : int ; speed : t_vec2} ;;
   
     (* Itération 1, 2, 3 et 4  *)
     type t_camlbrick ={
@@ -341,7 +342,8 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
         {
           paddle_color = RED ;
           paddle_size = PS_MEDIUM ;
-          paddle_wall = pos}
+          paddle_wall = pos
+        }
       )
     ;;
     
@@ -357,6 +359,7 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
     let make_camlbrick() : t_camlbrick = 
       (
         {
+          world_coordonates = mat_make(800,800, (0,0));
           brick_wall = mat_make(20,30,BK_empty) ; 
           param = make_camlbrick_param() ;
           paddle_track = make_paddle()}
