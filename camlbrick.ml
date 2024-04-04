@@ -121,10 +121,9 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
       
     *)
     type t_paddle_position = {x: int ref ; y: int};;
-    type t_caml_table_paddle = (t_paddle_position array array);;
 
     (* Itération 2 *)
-    type t_ball = unit;;
+    type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_x : int ; coordonate_y : int ; speed : t_vec2} ;;
     
     (* Itération 2 *)
     (** Enumeration des differents paramatres necessaire pour construire une raquette
@@ -132,9 +131,12 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     *)
     type t_paddle =
       {
+      paddle_height: int;
+      paddle_width: int ref;
+      paddle_speed: int ref;
       paddle_color: t_camlbrick_color ; 
       paddle_size: t_paddle_size ;
-      paddle_wall: t_caml_table_paddle ;     
+      paddle_position: t_vec2 ref ;     
       }
     ;;
     
@@ -143,17 +145,16 @@ en utilisant les rebonds d'une balle depuis une raquette contrôlée par l'utili
     *)
     type t_caml_world = (int * int) array array;;
 (* t_caml_world est le type qui définit le tableau du monde*) 
-
-type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_x : int ; coordonate_y : int ; speed : t_vec2} ;;
   
     (* Itération 1, 2, 3 et 4  *)
     type t_camlbrick ={
       brick_wall : t_caml_table ; 
       param : t_camlbrick_param ;
       paddle_track: t_paddle;
-      world_coordonates : t_caml_world;
-      ball : t_ball ; 
-      ball_list : t_ball list
+      ball: t_ball;
+      ball_list : t_ball list;
+      game_speed: int ref;
+      gameState: t_gamestate ref;
       }
     ;;
 
@@ -338,13 +339,15 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
 
       (* Itération 2 *) 
     let make_paddle() : t_paddle =
-      ( let pos: t_caml_table_paddle = mat_make(1,800, { x = ref 400 ; y = 50}) in
+      let l_param : t_camlbrick_param = make_camlbrick_param() in
         {
+          paddle_height = (l_param.paddle_init_height);
+          paddle_width = ref ((l_param.paddle_init_width));
+          paddle_speed = ref 5 ;
           paddle_color = RED ;
           paddle_size = PS_MEDIUM ;
-          paddle_wall = pos
+          paddle_position = ref (make_vec2(10,10)) ;
         }
-      )
     ;;
     
     (**
@@ -359,12 +362,12 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
     let make_camlbrick() : t_camlbrick = 
       (
         {
-          world_coordonates = mat_make(800,800, (0,0));
           brick_wall = mat_make(20,30,BK_empty) ; 
           param = make_camlbrick_param() ;
-          paddle_track = make_paddle()}
+          paddle_track = make_paddle();
           ball = {ball_size = BS_MEDIUM; color = WHITE; coordonate_y = 0 ; coordonate_x = 0 ; speed = {dx = 0 ; dy = 0}};
           ball_list = [];
+        }
       )
     ;;
     
@@ -452,27 +455,34 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
     @return la valeur de la coordonée x de la raquette
     @author Constain
     *)
-    (*A FINIR, normalement il y a un syntax erreur dans le !x*)
     let paddle_x(game : t_camlbrick) : int= 
       (* Itération 2 *)
-      (game.paddle_track.hd(paddle_wall.!x))
+      !(game.paddle_track.paddle_position).dx
     ;;
 
     
     let paddle_size_pixel(game : t_camlbrick) : int = 
       (* Itération 2 *)
-
+      !(game.paddle_track.paddle_width)
     ;;
     
     let paddle_move_left(game : t_camlbrick) : unit = 
       (* Itération 2 *)
+      let move_left : t_vec2 = make_vec2(-3* !(game.game_speed),0) in
+      if paddle_x(game) <= - 350 then
       ()
+      else
+      game.paddle_track.paddle_position := vec2_add(!(game.paddle_track.paddle_position),move_left);
     ;;
     
     let paddle_move_right(game : t_camlbrick) : unit = 
       (* Itération 2 *)
+      let move_right : t_vec2 = make_vec2(3* !(game.game_speed),0) in
+      if paddle_x(game) >=  355 then
       ()
-     ;;
+      else
+      game.paddle_track.paddle_position := vec2_add(!(game.paddle_track.paddle_position),move_right);
+    ;;
     
     let has_ball(game : t_camlbrick) : bool =
       (* Itération 2 *)
@@ -491,22 +501,21 @@ type t_ball = {ball_size : t_ball_size ; color : t_camlbrick_color ; coordonate_
       game.ball_list
     ;;
     
-    let rec ball_get(game, i : t_camlbrick * int) : t_ball =
-      (* Itération 2 *) 
-  if i < 0
-  then failwith ("Erreur ␣ball␣:␣ indice ␣ negatif")
-  else
-  if game.ball_list = []
-  then failwith ("Erreur ␣ball␣:␣ indice ␣en␣ dehors ␣ des␣ bornes")
-  else
-  if i = 0
-  then hd(game.ball_list)
-  else ball_get (tl (), i - 1)
+    (* Itération 2 *)
+  let rec ball_get(game, i : t_camlbrick * int) : t_ball = 
+    if i < 0
+    then failwith ("Erreur ␣ball␣:␣ indice ␣ negatif")
+    else
+      if game.ball_list == []
+      then failwith ("Erreur ␣ball␣:␣ indice ␣en␣ dehors ␣ des␣ bornes")
+      else
+        if i = 0
+        then List.hd(game.(ball_list))
+        else ball_get (tl (), i - 1)
 ;;
  
-    
+    (* Itération 2 *)
     let ball_x(game,ball : t_camlbrick * t_ball) : int =
-      (* Itération 2 *)
 if ball.coordonate_y >= 0 && ball.coordonate_y < Array.length game.world_coordonates then
     if ball.coordonate_x >= 0 && ball.coordonate_x < Array.length game.world_coordonates.(ball.coordonate_y) then
       (ball.coordonate_x)
