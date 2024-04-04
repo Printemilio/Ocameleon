@@ -655,12 +655,16 @@ if ball.coordonate_y >= 0 && ball.coordonate_y < Array.length game.world_coordon
       @param keyString nom de la touche appuyée.
       @param keyCode code entier de la touche appuyée.   
     *)
-    let canvas_keypressed(game, keyString, keyCode : t_camlbrick * string * int) : unit =
-      print_string("Key pressed: ");
+    let canvas_keypressed(game, keyString, keyCode : t_camlbrick * string * int) : unit =   
+      if(keyString="Left")then
+        paddle_move_left(game)
+      else if(keyString="Right")then
+        paddle_move_right(game)
+    (*print_string("Key pressed: ");
       print_string(keyString);
       print_string(" code=");
       print_int(keyCode);
-      print_newline()
+      print_newline() *)
     ;;
     
     (**
