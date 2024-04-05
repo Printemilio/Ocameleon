@@ -291,6 +291,7 @@ let make_paddle() : t_paddle =
     paddle_position = ref (make_vec2(10,10)) ;
   }
 ;;
+
   (* Itération 3 *) 
 let make_ball(x,y, size : int * int * int) : t_ball = 
   {
@@ -299,7 +300,6 @@ let make_ball(x,y, size : int * int * int) : t_ball =
     ball_velocity = {dx = 10 ; dy = 10};
   } 
 ;;
-
 
   (* Itération 1, 2, 3 et 4 *)
 let make_camlbrick() : t_camlbrick = 
@@ -427,19 +427,25 @@ let balls_count(game : t_camlbrick) : int =
 let balls_get(game : t_camlbrick) : t_ball list = 
   game.ball_list
 ;;
-  (* Itération 2 *) 
-let rec ball_get(game, i : t_camlbrick * int) : t_ball =
+
+let rec aux_ball_get(balllist, i : t_ball list * int) :t_ball =
   if i < 0
   then failwith ("Erreur ␣ball␣:␣ indice ␣ negatif")
   else
-  if game.ball_list == []
+  if balllist == []
   then failwith ("Erreur ␣ball␣:␣ indice ␣en␣ dehors ␣ des␣ bornes")
   else
   if i = 0
-  then List.hd(game.ball_list)
-  else ball_get (List.tl(game.ball), i - 1)
+  then List.hd(balllist)
+  else aux_ball_get(List.tl(balllist), i - 1)
 ;;
 
+  (* Itération 2 *) 
+let ball_get(game, i : t_camlbrick * int) : t_ball =
+ aux_ball_get (game.ball_list,i)
+;;
+
+(*Itération 2*)
 let ball_x(game,ball : t_camlbrick * t_ball) : int =
   (ball.ball_coordonates.dx)
 ;;
