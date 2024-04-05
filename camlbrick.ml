@@ -99,8 +99,8 @@ type t_gamestate = GAMEOVER | PLAYING | PAUSING;;
 type t_ball = 
   {
     ball_size : int ref ; 
-    ball_coordonates : t_vec2; 
-    ball_velocity : t_vec2;
+    ball_coordonates : t_vec2 ref; 
+    ball_velocity : t_vec2 ref;
     (* ball_scalar : int ref 
     ball_color : t_camlbrick_color ;  *)
   } 
@@ -296,8 +296,8 @@ let make_paddle() : t_paddle =
 let make_ball(x,y, size : int * int * int) : t_ball = 
   {
     ball_size = ref size; 
-    ball_coordonates = {dx = x ; dy = y}; 
-    ball_velocity = {dx = 10 ; dy = 10};
+    ball_coordonates = ref {dx = x ; dy = y}; 
+    ball_velocity = ref {dx = 10 ; dy = 10};
   } 
 ;;
 
@@ -312,19 +312,11 @@ let make_camlbrick() : t_camlbrick =
     ball =
       {
         ball_size = ref 2; 
-        ball_coordonates = {dx = 10 ; dy = 10};
-        ball_velocity = {dx = 10 ; dy = 10}; 
+        ball_coordonates = ref {dx = 10 ; dy = 10};
+        ball_velocity =ref {dx = 10 ; dy = 10}; 
       } ;
   }
 ;;
-
-
-
-
-
-
-
-
 
 (**
   Fonction utilitaire qui permet de traduire l'état du jeu sous la forme d'une chaîne de caractère.
@@ -447,11 +439,11 @@ let ball_get(game, i : t_camlbrick * int) : t_ball =
 
 (*Itération 2*)
 let ball_x(game,ball : t_camlbrick * t_ball) : int =
-  (ball.ball_coordonates.dx)
+  !(ball.ball_coordonates).dx
 ;;
 
 let ball_y(game, ball : t_camlbrick * t_ball) : int =
-  (ball.ball_coordonates.dy)
+  !(ball.ball_coordonates).dy
 ;;
 
 let ball_size_pixel(game, ball : t_camlbrick * t_ball) : int =
