@@ -295,10 +295,8 @@ let make_paddle() : t_paddle =
 let make_ball(x,y, size : int * int * int) : t_ball = 
   {
     ball_size = ref size; 
-    ball_color = GRAY ; 
     ball_coordonates = {dx = x ; dy = y}; 
     ball_velocity = {dx = 10 ; dy = 10};
-    ball_scalar = ref 3
   } 
 ;;
 
