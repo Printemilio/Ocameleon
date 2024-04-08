@@ -126,6 +126,7 @@ type t_camlbrick = {
   game_speed: int ref;
   ball_list : t_ball list;
   ball : t_ball;
+  game_state: t_gamestate;
 }
 ;;
 
@@ -315,6 +316,7 @@ let make_camlbrick() : t_camlbrick =
         ball_coordonates = ref {dx = 10 ; dy = 10};
         ball_velocity =ref {dx = 10 ; dy = 10}; 
       } ;
+    game_state = PLAYING
   }
 ;;
 
@@ -448,7 +450,7 @@ let ball_y(game, ball : t_camlbrick * t_ball) : int =
 
 let ball_size_pixel(game, ball : t_camlbrick * t_ball) : int =
   (* Itération 2 *)
-  0
+  !(game.ball.ball_size)
 ;;
 
 let ball_color(game, ball : t_camlbrick * t_ball) : t_camlbrick_color =
@@ -458,27 +460,39 @@ let ball_color(game, ball : t_camlbrick * t_ball) : t_camlbrick_color =
 
 let ball_modif_speed(game, ball, dv : t_camlbrick * t_ball * t_vec2) : unit =
   (* Itération 3 *)
-  ()
+  (
+    game.ball.ball_velocity := vec2_add_scalar(!(game.ball.ball_velocity), dv.dx , dv.dy )
+  )
 ;;
 
 
 let ball_modif_speed_sign(game, ball, sv : t_camlbrick * t_ball * t_vec2) : unit =
   (* Itération 3 *)
-  ()
+  (
+    game.ball.ball_velocity := vec2_mult_scalar(!(game.ball.ball_velocity), sv.dx , sv.dy )
+  )
 ;;
 
+(**
+@author Emilio    
+*)
 let is_inside_circle(cx,cy,rad, x, y : int * int * int * int * int) : bool =
   (* Itération 3 *)
-  false
+  (((x-cx)*(x-cx))*((y-cy)*(y-cy))) <= (rad*rad)
 ;;
 
+(**
+@author Emilio    
+*)
 let is_inside_quad(x1,y1,x2,y2, x,y : int * int * int * int * int * int) : bool =
   (* Itération 3 *)
-  false
+  (x >= x1 && x <= x2) && (x >= y1 && x <= y2)
 ;;
 
 
-
+(**
+@author Emilio    
+*)
 let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball list = 
   (* Itération 3 *)
   let fin_list : t_ball list ref = ref [] in 
@@ -676,6 +690,6 @@ let animate_action(game : t_camlbrick) : unit =
     Cette fonction est appelée par l'interface graphique à chaque frame
     du jeu vidéo.
     Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
-  *)
-  ()
+  *) (*A FINIR*)
+  (game.ball.ball_coordonates) := vec2_add_scalar !(game.ball.ball_velocity ; game.ball.ball_coordonates); 
 ;;
