@@ -484,9 +484,10 @@ let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball 
   let fin_list : t_ball list ref = ref [] in 
   for i=0 to balls_count(game) -1 do
     let ball : t_ball = ball_get(game, i)in
-    if !(ball.ball_position).y<=8000 then
+    if !(ball.ball_coordonates).dy<=8000 then
     fin_list := ball :: !(fin_list)
-    else 
+  done;
+  !fin_list
 ;;
 
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
