@@ -481,7 +481,12 @@ let is_inside_quad(x1,y1,x2,y2, x,y : int * int * int * int * int * int) : bool 
 
 let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball list = 
   (* Itération 3 *)
-  balls
+  let fin_list : t_ball list ref = ref [] in 
+  for i=0 to balls_count(game) -1 do
+    let ball : t_ball = ball_get(game, i)in
+    if !(ball.ball_position).y<=8000 then
+    fin_list := ball :: !(fin_list)
+    else 
 ;;
 
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
