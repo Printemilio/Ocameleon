@@ -61,6 +61,16 @@ type t_camlbrick_param = {
 *)
 type t_brick_kind = BK_empty | BK_simple | BK_double | BK_block | BK_bonus;;
 
+(**
+  Cette fonction renvoie le type de brique pour représenter les briques de vide.
+  C'est à dire, l'information qui encode l'absence de brique à un emplacement sur la grille du monde.
+  @return Renvoie le type correspondant à la notion de vide.
+  @deprecated  Cette fonction est utilisé en interne.    
+*)
+let make_empty_brick() : t_brick_kind = 
+  BK_empty
+;;
+
 (* Itération 1 *)
 type t_vec2 = {dx: int ; dy: int}
 ;;
@@ -690,6 +700,6 @@ let animate_action(game : t_camlbrick) : unit =
     Cette fonction est appelée par l'interface graphique à chaque frame
     du jeu vidéo.
     Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
-  *) (*A FINIR*)
-  (game.ball.ball_coordonates) := vec2_add_scalar !(game.ball.ball_velocity ; game.ball.ball_coordonates); 
+  *) (*A FINIR
+  (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
 ;;
