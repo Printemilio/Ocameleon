@@ -502,6 +502,13 @@ let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball 
   !fin_list
 ;;
 
+let ball_hit_border(game, ball : t_camlbrick * t_ball) : unit =
+  if (((!(ball.ball_coordonates).dx <= 0) && (!(ball.ball_velocity).dx < 0)) || ((!(ball.ball_coordonates).dx >= 800) && !(ball.ball_velocity).dx > 0))
+    then ball.ball_velocity := vec2_mult_scalar(!(ball.ball_velocity), -1,1)
+  else if (!(ball.ball_coordonates).dy <= 0) && (!(ball.ball_velocity).dy < 0) then
+    ball.ball_velocity := vec2_mult_scalar(!(ball.ball_velocity), 1,-1)
+;;
+
 (* Itération 3 *)
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
   if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) && 
@@ -546,8 +553,51 @@ let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : boo
 
 let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
   (* Itération 3 *)
-  ()
+  for i=0 to balls_count(game)-1 do
+    let ball : t_ball = ball_get(game,i) in
+
+      ball.ball_coordonates := vec2_add(!(ball.ball_coordonates),!(ball.ball_velocity));
+      ball_hit_paddle(game,ball,game.paddle_track);
+
+      game.ball := ball_remove_out_of_border(game,!(game.ball));
+      ball_hit_border(game,ball);
+
+    let x : int = !(ball.ball_coordonates).dx/40 and y : int = !(ball.ball_coordonates).dy/20 in
+    
+      if ball_hit_side_brick(game,ball,(dx),(dy)) then(
+
+        game.brick_wall.(dx).(dy)<-brick_hit(game,x,y);
+
+          if (!(ball.ball_coordonates).dx - !(ball.ball_velocity).dx < dx*40 || !(ball.ball_coordonates).dx + !(ball.ball_velocity).dx > x*40+40) &&
+            (!(ball.ball_coordonates).dy - !(ball.ball_velocity).dy > dy*20 && !(ball.ball_coordonates).dy + !(ball.ball_velocity).dy < y*20+20) then
+              (
+                ball.ball_coordonates := (
+                  if !(ball.ball_velocity).dx > 0 then
+                    vec2_add_scalar(!(ball.ball_coordonates), -5, 0)
+                  else
+                    vec2_add_scalar(!(ball.ball_coordonates), 5,0)
+                );
+
+                ball.ball_velocity := vec2_mult_scalar(!(ball.ball_velocity), -1, 1);
+
+              )
+
+          else 
+            (
+              ball.ball_coordonates := (
+                if !(ball.ball_velocity).dy > 0 then
+                  vec2_add_scalar(!(ball.ball_coordonates), 0, -5)
+                else
+                  vec2_add_scalar(!(ball.ball_coordonates), 0, 5)
+              );
+              
+              ball.ball_velocity := vec2_mult_scalar(!(ball.ball_velocity), 1, -1);
+            )
+          )
+      else();
+  done;
 ;;
+
 (********************************************END PADDLE ET BALLE PART****************************************************************************************)
 
 (**
@@ -712,8 +762,11 @@ let animate_action(game : t_camlbrick) : unit =
     Cette fonction est appelée par l'interface graphique à chaque frame
     du jeu vidéo.
     Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
-  *) (*A FINIR
   (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
-()
+  if !(game.game_state)= PLAYING then 
+    game_test_hit_balls(game,!(game.ball))
+  else ();
+  if game.brick_
+
 ;;
 
