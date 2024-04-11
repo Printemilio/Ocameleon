@@ -432,12 +432,10 @@ let balls_get(game : t_camlbrick) : t_ball list =
   game.ball_list
 ;;
 
-(* Itération 2 *) 
-let ball_get(game,i : t_camlbrick * int) : t_ball =
-  List.nth (balls_get(game)) i
+  (* Itération 2 *) 
+let ball_get(game, i : t_camlbrick * int) : t_ball =
+ List.nth (balls_get(game))i
 ;;
-
-
 
 (*Itération 2*)
 let ball_x(game,ball : t_camlbrick * t_ball) : int =
@@ -539,7 +537,11 @@ let ball_hit_corner_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : b
 (* lire l'énoncé choix à faire *)
 let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : bool =
   (* Itération 3 *)
-  false
+  if not(brick_get(game,i,j)=BK_empty) then
+    if (is_inside_quad(i*40, j*20, (i+1)*40,(j+1)*20, !(ball.ball_coordonates).dx, !(ball.ball_coordonates).dy))
+      then true
+      else false
+    else false
 ;;
 
 let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
@@ -714,3 +716,4 @@ let animate_action(game : t_camlbrick) : unit =
   (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
 ()
 ;;
+
