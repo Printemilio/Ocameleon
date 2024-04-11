@@ -432,22 +432,12 @@ let balls_get(game : t_camlbrick) : t_ball list =
   game.ball_list
 ;;
 
-let rec aux_ball_get(balllist, i : t_ball list * int) :t_ball =
-  if i < 0
-  then failwith ("Erreur ␣ball␣:␣ indice ␣ negatif")
-  else
-  if balllist == []
-  then failwith ("Erreur ␣ball␣:␣ indice ␣en␣ dehors ␣ des␣ bornes")
-  else
-  if i = 0
-  then List.hd(balllist)
-  else aux_ball_get(List.tl(balllist), i - 1)
+(* Itération 2 *) 
+let ball_get(game,i : t_camlbrick * int) : t_ball =
+  List.nth (balls_get(game)) i
 ;;
 
-  (* Itération 2 *) 
-let ball_get(game, i : t_camlbrick * int) : t_ball =
- aux_ball_get (game.ball_list,i)
-;;
+
 
 (*Itération 2*)
 let ball_x(game,ball : t_camlbrick * t_ball) : int =
@@ -482,9 +472,7 @@ let ball_modif_speed_sign(game, ball, sv : t_camlbrick * t_ball * t_vec2) : unit
     game.ball.ball_velocity := vec2_mult_scalar(!(game.ball.ball_velocity), sv.dx , sv.dy )
   )
 ;;
-(********************************************END PADDLE ET BALLE PART****************************************************************************************)
 
-(********************************************COLISIONS PART*************************************************************************************************)
 (**
 @author Emilio    
 *)
@@ -551,18 +539,14 @@ let ball_hit_corner_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : b
 (* lire l'énoncé choix à faire *)
 let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : bool =
   (* Itération 3 *)
-  if not(brick_get(game,i,j)=BK_empty) then
-    if (is_inside_quad(i*40, j*20, (i+1)*40,(j+1)*20, !(ball.ball_coordonates).dx, !(ball.ball_coordonates).dy))
-      then true
-      else false
-    else false
+  false
 ;;
 
 let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
   (* Itération 3 *)
   ()
 ;;
-(********************************************END COLISIONS PART*************************************************************************************************)
+(********************************************END PADDLE ET BALLE PART****************************************************************************************)
 
 (**
   Cette fonction est appelée par l'interface graphique avec le jeu en argument et la position
@@ -730,4 +714,3 @@ let animate_action(game : t_camlbrick) : unit =
   (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
 ()
 ;;
-
