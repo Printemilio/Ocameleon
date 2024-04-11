@@ -482,7 +482,9 @@ let ball_modif_speed_sign(game, ball, sv : t_camlbrick * t_ball * t_vec2) : unit
     game.ball.ball_velocity := vec2_mult_scalar(!(game.ball.ball_velocity), sv.dx , sv.dy )
   )
 ;;
+(********************************************END PADDLE ET BALLE PART****************************************************************************************)
 
+(********************************************COLISIONS PART*************************************************************************************************)
 (**
 @author Emilio    
 *)
@@ -560,7 +562,7 @@ let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
   (* Itération 3 *)
   ()
 ;;
-(********************************************END PADDLE ET BALLE PART****************************************************************************************)
+(********************************************END COLISIONS PART*************************************************************************************************)
 
 (**
   Cette fonction est appelée par l'interface graphique avec le jeu en argument et la position
