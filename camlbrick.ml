@@ -549,7 +549,11 @@ let ball_hit_corner_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : b
 (* lire l'énoncé choix à faire *)
 let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : bool =
   (* Itération 3 *)
-  false
+  if not(brick_get(game,i,j)=BK_empty) then
+    if (is_inside_quad(i*40, j*20, (i+1)*40,(j+1)*20, !(ball.ball_coordonates).dx, !(ball.ball_coordonates).dy))
+      then true
+      else false
+    else false
 ;;
 
 let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
