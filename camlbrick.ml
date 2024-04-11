@@ -403,8 +403,8 @@ let paddle_size_pixel(game : t_camlbrick) : int =
 
       (* Itération 2 *)
 let paddle_move_left(game : t_camlbrick) : unit = 
-  let move_left : t_vec2 = make_vec2(-3* !(game.game_speed),0) in
-  if paddle_x(game) <= - 350 then
+  let move_left : t_vec2 = make_vec2(-1* !(game.game_speed),0) in
+  if paddle_x(game) <= - 340 then
     ()
   else
     game.paddle_track.paddle_position := vec2_add(!(game.paddle_track.paddle_position),move_left);
@@ -412,8 +412,8 @@ let paddle_move_left(game : t_camlbrick) : unit =
  
       (* Itération 2 *)
 let paddle_move_right(game : t_camlbrick) : unit =
-  let move_right : t_vec2 = make_vec2(3* !(game.game_speed),0) in
-  if paddle_x(game) >=  355 then
+  let move_right : t_vec2 = make_vec2(1* !(game.game_speed),0) in
+  if paddle_x(game) >=  360 then
     ()
   else
     game.paddle_track.paddle_position := vec2_add(!(game.paddle_track.paddle_position),move_right);
@@ -664,11 +664,13 @@ let canvas_mouse_click_release(game,button,x,y : t_camlbrick * int * int * int) 
   @param keyCode code entier de la touche appuyée.   
 *)
 let canvas_keypressed(game, keyString, keyCode : t_camlbrick * string * int) : unit =
-  print_string("Key pressed: ");
-  print_string(keyString);
-  print_string(" code=");
-  print_int(keyCode);
-  print_newline()
+  if keyCode = 65363 then
+    paddle_move_right(game)
+  else
+  if keyCode = 65361 then
+    paddle_move_left(game)
+  else
+    ()
 ;;
 
 (**
