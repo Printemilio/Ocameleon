@@ -514,8 +514,28 @@ let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball 
   !fin_list
 ;;
 
+(* Itération 3 *)
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
-  (* Itération 3 *)
+  if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) && 
+      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/8) &&
+    (!(ball.ball_coordonates).dy >= 755)
+  then 
+    ball.ball_velocity := make_vec2(0,-1* !(game.game_speed)) 
+  else
+    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/4) && 
+      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/4) &&
+    (!(ball.ball_coordonates).dy >= 755)
+  then (
+    ball.ball_velocity := make_vec2(1* !(game.game_speed)/2, -1* !(game.game_speed)/2)
+  )
+  else 
+    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/2) && 
+    !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/2) &&
+  (!(ball.ball_coordonates).dy >= 755)
+  then (
+  ball.ball_velocity := make_vec2(1* !(game.game_speed)/3, -1* !(game.game_speed)/3)
+  )
+  else
   ()
 ;;
 
@@ -702,4 +722,6 @@ let animate_action(game : t_camlbrick) : unit =
     Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
   *) (*A FINIR
   (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
+()
 ;;
+
