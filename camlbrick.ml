@@ -134,7 +134,7 @@ type t_camlbrick = {
   brick_wall : t_caml_table ; 
   paddle_track: t_paddle;
   game_speed: int ref;
-  ball_list : t_ball list;
+  ball_list : t_ball list ref;
   ball : t_ball;
   game_state: t_gamestate;
 }
@@ -559,17 +559,17 @@ let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
       ball.ball_coordonates := vec2_add(!(ball.ball_coordonates),!(ball.ball_velocity));
       ball_hit_paddle(game,ball,game.paddle_track);
 
-      game.ball := ball_remove_out_of_border(game,!(game.ball));
+      game.ball_list := ball_remove_out_of_border(game,!(game.ball_list));
       ball_hit_border(game,ball);
 
-    let x : int = !(ball.ball_coordonates).dx/40 and y : int = !(ball.ball_coordonates).dy/20 in
+    let dx : int = !(ball.ball_coordonates).dx/40 and dy : int = !(ball.ball_coordonates).dy/20 in
     
       if ball_hit_side_brick(game,ball,(dx),(dy)) then(
 
-        game.brick_wall.(dx).(dy)<-brick_hit(game,x,y);
+        game.brick_wall.(dx).(dy)<-brick_hit(game,dx,dy);
 
-          if (!(ball.ball_coordonates).dx - !(ball.ball_velocity).dx < dx*40 || !(ball.ball_coordonates).dx + !(ball.ball_velocity).dx > x*40+40) &&
-            (!(ball.ball_coordonates).dy - !(ball.ball_velocity).dy > dy*20 && !(ball.ball_coordonates).dy + !(ball.ball_velocity).dy < y*20+20) then
+          if (!(ball.ball_coordonates).dx - !(ball.ball_velocity).dx < dx*40 || !(ball.ball_coordonates).dx + !(ball.ball_velocity).dx > dx*40+40) &&
+            (!(ball.ball_coordonates).dy - !(ball.ball_velocity).dy > dy*20 && !(ball.ball_coordonates).dy + !(ball.ball_velocity).dy < dy*20+20) then
               (
                 ball.ball_coordonates := (
                   if !(ball.ball_velocity).dx > 0 then
