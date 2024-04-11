@@ -1,7 +1,7 @@
 #use "CPtest.ml";;
 (*#use "camlbrick.ml";;*)
 
-(*Test Vecteur*)
+(*****************Test Vecteur******************************************************************************************************)
 
 let test_make_vec2 () : unit =
   let l_res : t_vec2 t_test_result = test_exec (make_vec2,"make_vec2(3,0)", (3,0)) in
@@ -24,7 +24,23 @@ let init_game() : t_camlbrick =
   let game_test : t_camlbrick = 
           {           
             brick_wall = mat_make(prm.world_width , prm.world_bricks_height, BK_empty ) ; 
-            param = prm
+            param = prm ;
+            paddle_track  = { 
+                              paddle_height = 5;
+                              paddle_width = ref 5;
+                              paddle_speed = ref 5;
+                              paddle_color = RED ; 
+                              paddle_size = PS_MEDIUM ;
+                              paddle_position = ref {dx= 10 ; dy= 10};
+                            };
+            game_speed = ref 5 ;
+            ball_list = ref [];
+            ball = {
+                     ball_size = ref 5; 
+                     ball_coordonates = ref {dx= 10 ; dy= 10}; 
+                     ball_velocity = ref {dx= 10 ; dy= 10};
+                   };
+            game_state = PAUSING;
           } 
   in
   (
@@ -35,6 +51,8 @@ let init_game() : t_camlbrick =
   );
   game_test
 ;;
+
+(*****************Test briques***************************************************************************************)
 
 (*brick_get*)
 let test_brick_get1 () : unit =
@@ -131,18 +149,26 @@ type t_caml_table_paddle = { x: int ref; y: int }
 
 let mat_make (n, m, init) = { x = ref (snd init); y = fst init } 
 
-type t_paddle = {
-  paddle_color: t_camlbrick_color;
-  paddle_size: t_paddle_size;
-  paddle_wall: t_caml_table_paddle;
-};;
+type t_paddle =
+  {
+    paddle_height: int;
+    paddle_width: int ref;
+    paddle_speed: int ref;
+    paddle_color: t_camlbrick_color ; 
+    paddle_size: t_paddle_size ;
+    paddle_position: t_vec2 ref ;     
+  }
+;;
 
 let make_paddle () : t_paddle =
-  let pos: t_caml_table_paddle = mat_make (1, 800, { x = ref 400; y = 50 }) in
+  let pos: t_caml_table_paddle = mat_make (1, 800, {400; 50}) in
   {
-    paddle_color = RED;
-    paddle_size = PS_MEDIUM;
-    paddle_wall = pos
+    paddle_height = 20 ;
+    paddle_width = ref 100;
+    paddle_speed = ref 5;
+    paddle_color = RED ; 
+    paddle_size = PS_MEDIUM ;
+    paddle_position = ref {dx = 10 ; dy = 10} 
   }
 ;;
 
@@ -150,60 +176,31 @@ let test_make_paddle () =
   let result = make_paddle () in
   assert (result.paddle_color = RED);
   assert (result.paddle_size = PS_MEDIUM);
-  assert (!(result.paddle_wall.x) = 400);
-  assert (result.paddle_wall.y = 50);
+  assert (result.paddle_height = 20);
+  assert (result.paddle_width = ref 100);
+  assert (result.paddle_speed = ref 5);
+  assert (result.paddle_position = ref {dx = 10 ; dy = 10} );
   print_endline "All tests passed for make_paddle."
 ;;
 
 (*make_camlbrick*)
 
-let mat_make (n, m, value) = n + m + value 
-let make_camlbrick_param () = { dummy = 42 } 
 
-type t_paddle = {
-  paddle_color: t_camlbrick_color;
-  paddle_size: t_paddle_size;
-  paddle_wall: t_caml_table_paddle;
-};;
-
-let make_paddle () : t_paddle =
-  let pos: t_caml_table_paddle = { x = ref 400; y = 50 } in 
-  { paddle_color = RED; paddle_size = PS_MEDIUM; paddle_wall = pos };;
-
-type t_camlbrick = {
-  brick_wall: t_caml_table;
-  param: t_camlbrick_param;
-  paddle_track: t_paddle;
-};;
-
-let make_camlbrick () : t_camlbrick =
-  {
-    brick_wall = mat_make (20, 30, BK_empty);
-    param = make_camlbrick_param ();
-    paddle_track = make_paddle ()
-  }
-;;
-
-let test_make_camlbrick () =
-  let result = make_camlbrick () in
-  assert (result.brick_wall = 20 + 30 + BK_empty);
-  assert (result.param.dummy = 42);
-  assert (result.paddle_track.paddle_color = RED);
-  assert (!(result.paddle_track.paddle_wall.x) = 400);
-  assert (result.paddle_track.paddle_wall.y = 50);
-  print_endline "All tests passed for make_camlbrick."
+let test_make_camlbrick_1 () : unit =
+  let l_res : t_camlbrick t_test_result = test_exec (make_camlbrick,"make_camlbrick()", ()) in
+  assert_equals_result_m ("result_make_camlbrick_1", t_camlbrick, l_res)
 ;;
 
 (**************************caml_table*********************************************************************)
 
 let test_caml_table_1 () : unit =
-  let l_res : t_caml_table t_test_result = test_exec (caml_table,"caml_table(10,30)", (10,30)) in
-  assert_equals_result_m ("result_caml_table_1", t_caml_table, l_res)
+  let l_res : t_caml_table t_test_result = test_exec (caml_table,"caml_table(BK_EMPTY)", BK_EMPTY) in
+  assert_equals_result_m ("result_caml_table_1", caml_table, l_res)
 ;;
 
 let test_caml_table_2 () : unit =
   let l_res : t_caml_table t_test_result = test_exec (caml_table,"caml_table(-10,0)", (-10,0)) in
-  assert_equals_result_m ("result_caml_table_2", t_caml_table, l_res)
+  assert_equals_result_m ("result_caml_table_2", caml_table, l_res)
 ;;
 
 (*****************************************)
