@@ -136,7 +136,7 @@ type t_camlbrick = {
   game_speed: int ref;
   ball_list : t_ball list ref;
   ball : t_ball;
-  game_state: t_gamestate;
+  game_state: t_gamestate ref;
 }
 ;;
 
@@ -326,7 +326,7 @@ let make_camlbrick() : t_camlbrick =
         ball_coordonates = ref {dx = 10 ; dy = 10};
         ball_velocity =ref {dx = 10 ; dy = 10}; 
       } ;
-    game_state = PLAYING
+    game_state = ref PLAYING
   }
 ;;
 
@@ -741,7 +741,7 @@ let stop_onclick(game : t_camlbrick) : unit =
   d'interagir avec le joueur.
 *)
 let speed_get(game : t_camlbrick) : int = 
-  0
+  !(game.game_speed)
 ;;
 
 
@@ -764,9 +764,9 @@ let animate_action(game : t_camlbrick) : unit =
     Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
   (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
   if !(game.game_state)= PLAYING then 
-    game_test_hit_balls(game,!(game.ball))
+    game_test_hit_balls(game,!(game.ball_list))
   else ();
-  if game.brick_
-
+  if game.brick_wall = [||] || game.ball_list = ref [] then
+    game.game_state := GAMEOVER
+  else()
 ;;
-
