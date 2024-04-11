@@ -319,7 +319,7 @@ let make_camlbrick() : t_camlbrick =
     param = make_camlbrick_param() ;
     paddle_track = make_paddle();
     game_speed = ref 5;
-    ball_list = [];
+    ball_list = ref [];
     ball =
       {
         ball_size = ref 2; 
@@ -417,19 +417,19 @@ let paddle_move_right(game : t_camlbrick) : unit =
   
       (* Itération 2 *)
 let has_ball(game : t_camlbrick) : bool =
-  if List.length(game.ball_list) <= 0
+  if List.length !(game.ball_list) <= 0
   then false
   else true
 ;;
 
   (* Itération 2 *)
 let balls_count(game : t_camlbrick) : int =
-  List.length(game.ball_list)
+  List.length !(game.ball_list)
 ;;
 
   (* Itération 2 *)
 let balls_get(game : t_camlbrick) : t_ball list = 
-  game.ball_list
+  !(game.ball_list)
 ;;
 
   (* Itération 2 *) 
