@@ -340,8 +340,13 @@ let make_camlbrick() : t_camlbrick =
   @return Renvoie la chaîne de caractère représentant l'état du jeu.
 *)
 let string_of_gamestate(game : t_camlbrick) : string =
-  (* Itération 1,2,3 et 4 *)
-  "INCONNU"
+  (* Itération 1,2,3 et 4 *) (*A FINIR
+  if game.game_state := PLAYING
+  then "PLAYING"
+  else if game.game_state := GAMEOVER
+    then "GAMEOVER"
+    else "PAUSING" *)
+    "INCONNU"
 ;; 
 (**********************************END PARAMETRES PART********************************************************************************************************)
 
