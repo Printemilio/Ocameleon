@@ -323,15 +323,21 @@ let make_ball(x,y, size : int * int * int) : t_ball =
 
   (* Itération 1, 2, 3 et 4 *)
 let make_camlbrick() : t_camlbrick = 
+  ( let res : t_camlbrick = 
   {
     brick_wall = caml_table(20,30) ;
     param = make_camlbrick_param() ;
     paddle_track = make_paddle();
-    game_speed = ref 5;
+    game_speed = ref 1;
     ball_list = ref [make_ball(100,100,10)];
     ball = make_ball(100,100,10);
     game_state = ref PLAYING
-  }
+  } in
+  (
+    (*print_....;*)
+    res
+  )
+  )
 ;;
 
 (**
