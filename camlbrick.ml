@@ -763,13 +763,13 @@ let speed_change(game,xspeed : t_camlbrick * int) : unit=
 ;;
 
 
-
-let animate_action(game : t_camlbrick) : unit =  
   (* Iteration 1,2,3 et 4
     Cette fonction est appelée par l'interface graphique à chaque frame
     du jeu vidéo.
-    Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.    
-  (game.ball.ball_coordonates) := vec2_add !(!(game.ball.ball_velocity) , !(game.ball.ball_coordonates)); *)
+    Vous devez mettre tout le code qui permet de montrer l'évolution du jeu vidéo.
+  *)
+let animate_action(game : t_camlbrick) : unit =  
+  (game.ball.ball_coordonates) := vec2_add (!(game.ball.ball_velocity) , !(game.ball.ball_coordonates));
   if !(game.game_state)= PLAYING then 
     game_test_hit_balls(game,!(game.ball_list))
   else ();
