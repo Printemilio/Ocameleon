@@ -40,7 +40,7 @@ let init_game() : t_camlbrick =
                      ball_coordonates = ref {dx= 10 ; dy= 10}; 
                      ball_velocity = ref {dx= 10 ; dy= 10};
                    };
-            game_state = PAUSING;
+            game_state = ref PAUSING;
           } 
   in
   (
@@ -161,7 +161,6 @@ type t_paddle =
 ;;
 
 let make_paddle () : t_paddle =
-  let pos: t_caml_table_paddle = mat_make (1, 800, {400; 50}) in
   {
     paddle_height = 20 ;
     paddle_width = ref 100;
