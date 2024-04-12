@@ -759,7 +759,12 @@ let speed_get(game : t_camlbrick) : int =
   Ainsi, vous pourrez réagir selon le joueur.
 *)
 let speed_change(game,xspeed : t_camlbrick * int) : unit=
-  print_endline("Change speed : "^(string_of_int xspeed));
+  for i = 0 to List.length(!(game.ball_list)) -1 do
+    let ball : t_ball = ball_get(game,i) in
+    if xspeed/ !(game.game_speed) >= 1 then
+      ball.ball_velocity := vec2_mult_scalar(!(ball.ball_velocity), xspeed/ !(game.game_speed), xspeed/ !(game.game_speed))
+  done;
+  game.game_speed := xspeed;
 ;;
 
 
