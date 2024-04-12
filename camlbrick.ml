@@ -295,9 +295,9 @@ let make_paddle() : t_paddle =
   {
     paddle_height = (l_param.paddle_init_height);
     paddle_width = ref ((l_param.paddle_init_width));
-    paddle_speed = ref 5 ;
+    paddle_speed = ref 20 ;
     paddle_color = RED ;
-    paddle_size = PS_MEDIUM ;
+    paddle_size = PS_BIG ;
     paddle_position = ref (make_vec2(10,10)) ;
   }
 ;;
@@ -308,7 +308,7 @@ let make_ball(x,y, size : int * int * int) : t_ball =
     ball_size = ref size; 
     ball_coordonates = ref {dx = x ; dy = y}; 
     ball_velocity = ref {dx = 10 ; dy = 10};
-    ball_color = GREEN 
+    ball_color = YELLOW 
   } 
 ;;
 
@@ -319,14 +319,8 @@ let make_camlbrick() : t_camlbrick =
     param = make_camlbrick_param() ;
     paddle_track = make_paddle();
     game_speed = ref 5;
-    ball_list = ref [];
-    ball =
-      {
-        ball_size = ref 20; 
-        ball_coordonates = ref {dx = 10 ; dy = 10};
-        ball_velocity =ref {dx = 10 ; dy = 10}; 
-        ball_color = GREEN
-      } ;
+    ball_list = ref [make_ball(100,100,10)];
+    ball = make_ball(100,100,50);
     game_state = ref PLAYING
   }
 ;;
@@ -342,12 +336,12 @@ let make_camlbrick() : t_camlbrick =
 *)
 let string_of_gamestate(game : t_camlbrick) : string =
   (* Itération 1,2,3 et 4 *) 
-  if game.game_state = PLAYING
+  if game.game_state = ref PLAYING
   then "PLAYING"
-  else if game.game_state = GAMEOVER
+  else if game.game_state = ref GAMEOVER
     then "GAMEOVER"
     else "PAUSING" 
-;; 
+;;
 (**********************************END PARAMETRES PART********************************************************************************************************)
 
 (**********************************BRICKS PART****************************************************************************************************************)
