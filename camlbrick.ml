@@ -108,11 +108,10 @@ type t_gamestate = GAMEOVER | PLAYING | PAUSING;;
 (* Itération 2 *) 
 type t_ball = 
   {
-    ball_size : int ref ; 
+    ball_size : int ref; 
     ball_coordonates : t_vec2 ref; 
     ball_velocity : t_vec2 ref;
-    (* ball_scalar : int ref 
-    ball_color : t_camlbrick_color ;  *)
+    ball_color : t_camlbrick_color ;  
   } 
 ;;
 (* Itération 2 *)
@@ -309,6 +308,7 @@ let make_ball(x,y, size : int * int * int) : t_ball =
     ball_size = ref size; 
     ball_coordonates = ref {dx = x ; dy = y}; 
     ball_velocity = ref {dx = 10 ; dy = 10};
+    ball_color = GREEN 
   } 
 ;;
 
@@ -322,9 +322,10 @@ let make_camlbrick() : t_camlbrick =
     ball_list = ref [];
     ball =
       {
-        ball_size = ref 2; 
+        ball_size = ref 20; 
         ball_coordonates = ref {dx = 10 ; dy = 10};
         ball_velocity =ref {dx = 10 ; dy = 10}; 
+        ball_color = GREEN
       } ;
     game_state = ref PLAYING
   }
@@ -340,13 +341,12 @@ let make_camlbrick() : t_camlbrick =
   @return Renvoie la chaîne de caractère représentant l'état du jeu.
 *)
 let string_of_gamestate(game : t_camlbrick) : string =
-  (* Itération 1,2,3 et 4 *) (*A FINIR
-  if game.game_state := PLAYING
+  (* Itération 1,2,3 et 4 *) 
+  if game.game_state = PLAYING
   then "PLAYING"
-  else if game.game_state := GAMEOVER
+  else if game.game_state = GAMEOVER
     then "GAMEOVER"
-    else "PAUSING" *)
-    "INCONNU"
+    else "PAUSING" 
 ;; 
 (**********************************END PARAMETRES PART********************************************************************************************************)
 
@@ -458,7 +458,7 @@ let ball_size_pixel(game, ball : t_camlbrick * t_ball) : int =
 
 let ball_color(game, ball : t_camlbrick * t_ball) : t_camlbrick_color =
   (* Itération 2 *)
-  GRAY
+  ball.ball_color
 ;;
 
 let ball_modif_speed(game, ball, dv : t_camlbrick * t_ball * t_vec2) : unit =
