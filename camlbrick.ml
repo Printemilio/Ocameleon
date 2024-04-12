@@ -297,9 +297,18 @@ let make_paddle() : t_paddle =
     paddle_width = ref ((l_param.paddle_init_width));
     paddle_speed = ref 20 ;
     paddle_color = RED ;
-    paddle_size = PS_BIG ;
+    paddle_size = PS_MEDIUM ;
     paddle_position = ref (make_vec2(10,10)) ;
   }
+;;
+
+let make_size (ball,size : t_ball*t_ball_size): unit =
+  if size = BS_SMALL
+    then ball.ball_size := 5
+else
+  if size = BS_MEDIUM
+    then ball.ball_size := 10
+else ball.ball_size := 15
 ;;
 
   (* Itération 3 *) 
@@ -320,7 +329,7 @@ let make_camlbrick() : t_camlbrick =
     paddle_track = make_paddle();
     game_speed = ref 5;
     ball_list = ref [make_ball(100,100,10)];
-    ball = make_ball(100,100,50);
+    ball = make_ball(100,100,10);
     game_state = ref PLAYING
   }
 ;;
@@ -495,7 +504,7 @@ let ball_remove_out_of_border(game,balls : t_camlbrick * t_ball list ) : t_ball 
   let fin_list : t_ball list ref = ref [] in 
   for i=0 to balls_count(game) -1 do
     let ball : t_ball = ball_get(game, i)in
-    if !(ball.ball_coordonates).dy<=8000 then
+    if !(ball.ball_coordonates).dy<=800 then
     fin_list := ball :: !(fin_list)
   done;
   !fin_list
@@ -510,6 +519,8 @@ let ball_hit_border(game, ball : t_camlbrick * t_ball) : unit =
 
 (* Itération 3 *)
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
+(
+  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
   if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) && 
       !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/8) &&
     (!(ball.ball_coordonates).dy >= 755)
@@ -530,7 +541,9 @@ let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
   ball.ball_velocity := make_vec2(1* !(game.game_speed)/3, -1* !(game.game_speed)/3)
   )
   else
-  ()
+  ();
+  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
+)
 ;;
 
 
