@@ -23,7 +23,7 @@ let init_game() : t_camlbrick =
   in
   let game_test : t_camlbrick = 
           {           
-            brick_wall = mat_make(prm.world_width , prm.world_bricks_height, BK_empty ) ; 
+            brick_wall = caml_table(prm.world_width , prm.world_bricks_height) ; 
             param = prm ;
             paddle_track  = { 
                               paddle_height = 5;
@@ -39,6 +39,7 @@ let init_game() : t_camlbrick =
                      ball_size = ref 5; 
                      ball_coordonates = ref {dx= 10 ; dy= 10}; 
                      ball_velocity = ref {dx= 10 ; dy= 10};
+                     ball_color = YELLOW;
                    };
             game_state = ref PAUSING;
           } 
@@ -141,7 +142,6 @@ let test_aux_brick_color4 () : unit =
   assert_equals_result_m ("result_aux_brick_color4", GRAY, l_res)
 ;;
 
-(*aux_brick_color*)
 
 type t_camlbrick_color = RED | BLUE 
 type t_paddle_size = PS_SMALL | PS_MEDIUM | PS_LARGE 
@@ -184,6 +184,32 @@ let test_make_paddle () =
 
 (*make_camlbrick*)
 
+let test_make_camlbrick_structural () =
+  let camlbrick = make_camlbrick () in
+  (* Vérifiez la structure du mur de briques *)
+  assert (camlbrick.brick_wall = caml_table (20,30));
+  (* Assurez-vous que les références et les listes sont initialisées *)
+  assert (!(camlbrick.game_speed) = 1);
+  assert (!(camlbrick.ball_list) = [{ ball_size = ref 10; 
+                                      ball_coordonates = ref { dx = 100; dy = 100 }; 
+                                      ball_velocity = ref { dx = 0; dy = 0 };
+                                      ball_color = GREEN (* valeur de couleur attendue *) }]);
+  (* Vérifiez que l'état de jeu est initialisé correctement *)
+  assert (!(camlbrick.game_state) = PLAYING);
+  (* Vérifiez que le paddle est correctement initialisé *)
+  assert (camlbrick.paddle_track = { paddle_height = 20 (* valeur attendue *);
+                                     paddle_width = ref 100 (* valeur attendue *);
+                                     paddle_speed = ref 20 (* valeur attendue *);
+                                     paddle_color = RED (* valeur de couleur attendue *);
+                                     paddle_size = PS_MEDIUM (* taille de la raquette attendue *);
+                                     paddle_position = ref { dx = 10; dy = 10 } (* position de la raquette attendue *) });
+  (* Vérifiez que la balle est correctement initialisée *)
+  assert (camlbrick.ball = { ball_size = ref 10; 
+                             ball_coordonates = ref { dx = 100; dy = 100 }; 
+                             ball_velocity = ref { dx = 0; dy = 0 };
+                             ball_color = GREEN (* valeur de couleur attendue *) });
+  print_endline "Structural test make_camlbrick passed!"
+;;
 
 let test_make_camlbrick_1 () : unit =
   let l_res : t_camlbrick t_test_result = test_exec (make_camlbrick,"make_camlbrick()", ()) in
@@ -191,9 +217,8 @@ let test_make_camlbrick_1 () : unit =
 ;;
 
 (**************************caml_table*********************************************************************)
-
 let test_caml_table_1 () : unit =
-  let l_res : t_caml_table t_test_result = test_exec (caml_table,"caml_table(BK_EMPTY)", BK_EMPTY) in
+  let l_res : int*int*t_caml_table t_test_result = test_exec (caml_table,"caml_table(BK_EMPTY)", ( 0, 0, BK_EMPTY)) in
   assert_equals_result_m ("result_caml_table_1", caml_table, l_res)
 ;;
 
@@ -232,6 +257,7 @@ test_aux_brick_color4 ();;
 
 test_make_paddle ();;
 test_make_camlbrick ();;
+test_make_camlbrick_structural ();;
 
 test_caml_table_1 ();;
 test_caml_table_2 ();;
