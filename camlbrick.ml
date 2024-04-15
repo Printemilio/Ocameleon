@@ -553,20 +553,21 @@ let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
 ;;
 
 
-(* lire l'énoncé choix à faire *)
+(* lire l'énoncé choix à faire
 let ball_hit_corner_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : bool =
-  (* Itération 3 *)
-  false
-;;
+  if not(brick_get(game,i,j)=BK_empty) then
+    if (is_inside_circle(ba))    
+;; *)
 
 (* lire l'énoncé choix à faire *)
 let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : bool =
   (* Itération 3 *)
-  if not(brick_get(game,i,j)=BK_empty) then
-    if (is_inside_quad(i*40, j*20, (i+1)*40,(j+1)*20, !(ball.ball_coordonates).dx, !(ball.ball_coordonates).dy))
-      then true
-      else false
-    else false
+  if i<20 && j<30 then
+    (if (brick_get(game,i,j)=BK_simple || brick_get(game,i,j)=BK_double || brick_get(game,i,j)=BK_block) && (is_inside_quad(i*40,j*20,(i+1)*40,(j+1)*20,!(ball.ball_coordonates).dx,!(ball.ball_coordonates).dy)) then
+      not(brick_get(game,i,j)=BK_empty) && (is_inside_quad(i*40,j*20,(i+1)*40,(j+1)*20,!(ball.ball_coordonates).dx,!(ball.ball_coordonates).dy)) else false
+    )
+    else
+      false
 ;;
 
 let game_test_hit_balls(game, balls : t_camlbrick * t_ball list) : unit =
