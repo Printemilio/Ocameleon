@@ -316,7 +316,7 @@ let make_ball(x,y, size : int * int * int) : t_ball =
   {
     ball_size = ref size; 
     ball_coordonates = ref {dx = x ; dy = y}; 
-    ball_velocity = ref {dx = 10 ; dy = 10};
+    ball_velocity = ref {dx = 1 ; dy = -1};
     ball_color = YELLOW 
   } 
 ;;
@@ -329,8 +329,8 @@ let make_camlbrick() : t_camlbrick =
     param = make_camlbrick_param() ;
     paddle_track = make_paddle();
     game_speed = ref 1;
-    ball_list = ref [make_ball(100,300,10)];
-    ball = make_ball(100,300,10);
+    ball_list = ref [make_ball(400,600,10)];
+    ball = make_ball(400,600,10);
     game_state = ref PLAYING
   } in
   (
