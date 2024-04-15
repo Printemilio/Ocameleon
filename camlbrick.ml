@@ -564,7 +564,7 @@ let ball_hit_side_brick(game,ball, i,j : t_camlbrick * t_ball * int * int) : boo
   (* Itération 3 *)
   if i<20 && j<30 then
     (if (brick_get(game,i,j)=BK_simple || brick_get(game,i,j)=BK_double || brick_get(game,i,j)=BK_block) && (is_inside_quad(i*40,j*20,(i+1)*40,(j+1)*20,!(ball.ball_coordonates).dx,!(ball.ball_coordonates).dy)) then
-      not(brick_get(game,i,j)=BK_empty) && (is_inside_quad(i*40,j*20,(i+1)*40,(j+1)*20,!(ball.ball_coordonates).dx,!(ball.ball_coordonates).dy)) else false
+      not(brick_get(game,i,j)=BK_empty) && (is_inside_quad(i*40,j*20,(i+1)*40,(j+1)*20,!(ball.ball_coordonates).dx,!(ball.ball_coordonates).dy)) else true
     )
     else
       false
