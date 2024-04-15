@@ -738,7 +738,7 @@ let custom2_text() : string =
   @param game la partie en cours.
 *)
 let start_onclick(game : t_camlbrick) : unit=
-  ()
+  (game.game_state) := PLAYING
 ;;
 
 (**
@@ -751,7 +751,7 @@ let start_onclick(game : t_camlbrick) : unit=
   @param game la partie en cours.
 *)
 let stop_onclick(game : t_camlbrick) : unit =
-  ()
+  (game.game_state) := GAMEOVER
 ;;
 
 (**
