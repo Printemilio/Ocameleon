@@ -329,8 +329,8 @@ let make_camlbrick() : t_camlbrick =
     param = make_camlbrick_param() ;
     paddle_track = make_paddle();
     game_speed = ref 1;
-    ball_list = ref [make_ball(100,100,10)];
-    ball = make_ball(100,100,10);
+    ball_list = ref [make_ball(100,300,10)];
+    ball = make_ball(100,300,10);
     game_state = ref PLAYING
   } in
   (
