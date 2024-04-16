@@ -3,7 +3,7 @@
 (*****************Test Vecteur******************************************************************************************************)
 
 (**Cette fonction vérifie la fonction make_vec2 
-@author Emilio Decaix    
+@author Erwan Beau    
 *) 
 let test_make_vec2 () : unit =
   let l_res : t_vec2 t_test_result = test_exec (make_vec2,"make_vec2(3,0)", (3,0)) in
@@ -11,7 +11,7 @@ let test_make_vec2 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction vec2_add
-@author Emilio Decaix    
+@author Erwan Beau    
 *) 
 let test_vec2_add () : unit =
   let l_res : t_vec2 t_test_result = test_exec (vec2_add,"vec2_add(3,0)(3,0)", ({dx = 3; dy = 0},{dx = 3; dy = 0})) in
@@ -19,7 +19,7 @@ let test_vec2_add () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction vec2_mult
-@author Emilio Decaix    
+@author Erwan Beau    
 *) 
 let test_vec2_mult () : unit =
   let l_res : t_vec2 t_test_result = test_exec (vec2_mult,"vec2_mult(3.0)(3.0)", ({dx = 3; dy = 0},{dx = 3; dy = 0})) in
@@ -67,7 +67,7 @@ let init_game() : t_camlbrick =
 (*****************Test briques***************************************************************************************)
 
 (**Cette fonction vérifie la fonction brick_get1
-@author Emilio Decaix    
+@author Pavel Chauveau    
 *) 
 let test_brick_get1 () : unit =
   let l_res : t_brick_kind t_test_result = test_exec (brick_get,"brick_get(0,1)", (init_game(),0,1)) in
@@ -75,7 +75,7 @@ let test_brick_get1 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_get2
-@author Emilio Decaix    
+@author Pavel Chauveau    
 *) 
 let test_brick_get2 () : unit =
   let l_res : t_brick_kind t_test_result = test_exec (brick_get,"brick_get(0,0)", (init_game(),0,0)) in
@@ -83,7 +83,7 @@ let test_brick_get2 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_get3
-@author Emilio Decaix    
+@author Pavel Chauveau   
 *) 
 let test_brick_get3 () : unit =
   let l_res : t_brick_kind t_test_result = test_exec (brick_get,"brick_get(1,1)", (init_game(),1,1)) in
@@ -91,7 +91,7 @@ let test_brick_get3 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_get4
-@author Emilio Decaix    
+@author Pavel Chauveau    
 *) 
 let test_brick_get4 () : unit =
   let l_res : t_brick_kind t_test_result = test_exec (brick_get,"brick_get(1,0)", (init_game(),1,0)) in
@@ -131,7 +131,7 @@ let test_brick_hit4 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_color1
-@author Emilio Decaix    
+@author Sebastian Constain   
 *) 
 let test_brick_color1 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(1,1)", (init_game(),1,1)) in
@@ -139,7 +139,7 @@ let test_brick_color1 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_color2
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_brick_color2 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(0,1)", (init_game(),0,1)) in
@@ -147,7 +147,7 @@ let test_brick_color2 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_color3
-@author Emilio Decaix    
+@author Sebastian Constain   
 *) 
 let test_brick_color3 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(1,0)", (init_game(),1,0)) in
@@ -155,7 +155,7 @@ let test_brick_color3 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction brick_color4
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_brick_color4 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (brick_color,"brick_color(0,0)", (init_game(),0,0)) in
@@ -163,7 +163,7 @@ let test_brick_color4 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction aux_brick_color1
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_aux_brick_color1 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_block)", (BK_block)) in
@@ -171,7 +171,7 @@ let test_aux_brick_color1 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction aux_brick_color2
-@author Emilio Decaix    
+@author Sebastian Constain
 *) 
 let test_aux_brick_color2 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_simple)", (BK_simple)) in
@@ -179,7 +179,7 @@ let test_aux_brick_color2 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction aux_brick_color3
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_aux_brick_color3 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_double)", (BK_double)) in
@@ -187,7 +187,7 @@ let test_aux_brick_color3 () : unit =
 ;;
 
 (**Cette fonction vérifie la fonction aux_brick_color4
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_aux_brick_color4 () : unit =
   let l_res : t_camlbrick_color t_test_result = test_exec (aux_brick_color,"aux_brick_color(BK_empty)", (BK_empty)) in
@@ -205,7 +205,7 @@ let mat_make (n, m, init) = { x = ref (snd init); y = fst init }
 
 
 (**Cette fonction vérifie la fonction make paddle
-@author Emilio Decaix    
+@author Pavel Chauveau   
 *) 
 let test_make_paddle () =
   let result = make_paddle () in
@@ -223,7 +223,7 @@ let y = 100;;
 let size = 5;;
 
 (**Cette fonction vérifie la fonction make_ball
-@author Emilio Decaix    
+@author Emilio Decaix   
 *) 
 let test_make_ball () =
   let result = make_ball (x,y, size : int * int * int) in
@@ -236,7 +236,7 @@ let test_make_ball () =
 ;;
 
 (**Ici on défini ball pour d'autre fonction
-@author Emilio Decaix    
+@author Pavel Chauvau    
 *) 
 let ball = {
   ball_size = ref 5 ; 
@@ -246,7 +246,7 @@ let ball = {
   }
 
 (**Cette fonction vérifie la fonction make_size
-@author Emilio Decaix    
+@author Sebastian Constain    
 *) 
 let test_make_size () : unit =
   let l_res : unit t_test_result = test_exec (make_size,"make_size(5)", (ball ,BS_SMALL)) in
@@ -283,7 +283,7 @@ let test_make_camlbrick() : unit =
 ;;
 
 (**Cette fonction vérifie la fonction make_ball
-@author Emilio Decaix    
+@author Emilio Decaix   
 *) 
 let test_make_ball() : unit =
   let l_res: t_ball t_test_result = test_exec (make_ball , "make_ball", (100,100,5)) in
