@@ -279,5 +279,3 @@ let launch_camlbrick(param, game) =
 ;;
 
 (* let _ = Printexc.print mainLoop ();; *)
-
-
