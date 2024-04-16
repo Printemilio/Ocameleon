@@ -331,9 +331,9 @@ test_make_ball ();;
 test_caml_table_1 ();;
 test_caml_table_2 ();;
 
-test_fonc_ball_remove_out_of_border ();;
-test_fonc_ball_hit_corner_brick ();;
-test_fonc_ball_hit_side_brick ();;
-test_struct_ball_hit_paddle ();;
+test_ball_remove_out_of_border ();;
+test_ball_hit_corner_brick ();;
+test_ball_hit_side_brick ();;
+test_ball_hit_paddle ();;
 
 test_report();;
