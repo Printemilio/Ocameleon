@@ -723,51 +723,31 @@ let ball_hit_border(game, ball : t_camlbrick * t_ball) : unit =
  @author Sebastian Constain
 *)
 let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
-  (* Itération 3 *)
-
-
-  if (!(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) &&
-      !(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)> (paddle_x(game)- paddle_size_pixel(game)/8) && 
-      (!(ball.ball_position).y >= 755) then (
-        ball.ball_velocity := make_vec2(0,-1* !(game.game_speed))
-      )
-      
-      
-      
+(
+  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
+  if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) && 
+      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/8) &&
+    (!(ball.ball_coordonates).dy >= 755)
+  then 
+    ball.ball_velocity := make_vec2(0,-1* !(game.game_speed)) 
+  else
+    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/4) && 
+      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/4) &&
+    (!(ball.ball_coordonates).dy >= 755)
+  then (
+    ball.ball_velocity := make_vec2(1* !(game.game_speed)/2, -1* !(game.game_speed)/2)
+  )
   else 
-    if (!(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/4) &&
-        !(ball.ball_position).  x-(400- !(ball.ball_size)) + !(ball.ball_size) > (paddle_x(game)) && 
-        (!(ball.ball_position).y >= 755) then (
-          ball.ball_velocity :=   make_vec2(1* !(game.game_speed)/2,-1* !(game.game_speed)/2)
-         
-          
-        )
-  
-    else 
-      if (!(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/2) &&
-          !(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size) > (paddle_x(game)) && 
-          (!(ball.ball_position).y >= 755) then (
-              ball.ball_velocity :=   make_vec2(2* !(game.game_speed)/3,-1* !(game.game_speed)/3)
-              
-              
-           )
-      else 
-        if (!(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)) > (paddle_x(game) - paddle_size_pixel(game)/4) &&
-        !(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)< (paddle_x(game)) && 
-        (!(ball.ball_position).y >= 755) then (
-                ball.ball_velocity :=   make_vec2(-1* !(game.game_speed)/2,-1* !(game.game_speed)/2)
-                
-                
-              )
-        else 
-            if (!(ball.ball_position).x-(400- !(ball.ball_size)) + !(ball.ball_size)) > (paddle_x(game) - paddle_size_pixel(game)/2) &&
-                !(ball.ball_position).x-(400- !(ball.ball_size))+ !(ball.ball_size) < (paddle_x(game)) && 
-                (!(ball.ball_position).y >= 755) then
-                  ball.ball_velocity :=   make_vec2(-2* !(game.game_speed)/3,-1* !(game.game_speed)/3)
-                
-              
-                
-        
+    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/2) && 
+    !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/2) &&
+  (!(ball.ball_coordonates).dy >= 755)
+  then (
+  ball.ball_velocity := make_vec2(1* !(game.game_speed)/3, -1* !(game.game_speed)/3)
+  )
+  else
+  ();
+  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
+)
 ;;
 
 
