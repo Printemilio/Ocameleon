@@ -722,33 +722,22 @@ let ball_hit_border(game, ball : t_camlbrick * t_ball) : unit =
  @return unit (La fonction modifie une valeur du jeu)
  @author Sebastian Constain
 *)
-let ball_hit_paddle(game,ball,paddle : t_camlbrick * t_ball * t_paddle) : unit =
-(
-  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
-  if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/8) && 
-      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/8) &&
-    (!(ball.ball_coordonates).dy >= 755)
-  then 
-    ball.ball_velocity := make_vec2(0,-1* !(game.game_speed)) 
-  else
-    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/4) && 
-      !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/4) &&
-    (!(ball.ball_coordonates).dy >= 755)
-  then (
-    ball.ball_velocity := make_vec2(1* !(game.game_speed)/2, -1* !(game.game_speed)/2)
+let ball_hit_paddle(game, ball, paddle : t_camlbrick * t_ball * t_paddle) : unit =
+  (
+    print_int(!(ball.ball_velocity).dx); print_int(!(ball.ball_velocity).dy);
+    (* Condition pour vérifier si la balle est au niveau de la raquette *)
+    if (!(ball.ball_coordonates).dy >= 755 && !(ball.ball_coordonates).dy <= 765) &&
+       (!(ball.ball_coordonates).dx >= paddle_x(game) - !(paddle.paddle_width) / 2) &&
+       (!(ball.ball_coordonates).dx <= paddle_x(game) + !(paddle.paddle_width) / 2)
+    then (
+      let new_dx = !(ball.ball_velocity).dx in  (* Conserve la composante horizontale de la vitesse *)
+      let new_dy = -1 * abs(!(ball.ball_velocity).dy) in  (* Inverse la composante verticale de la vitesse *)
+      ball.ball_velocity := {dx = new_dx; dy = new_dy}
+    )
+    else ();
+    print_int(!(ball.ball_velocity).dx); print_int(!(ball.ball_velocity).dy);
   )
-  else 
-    if (!(ball.ball_coordonates).dx-(400- !(ball.ball_size)) + !(ball.ball_size)) < (paddle_x(game) + paddle_size_pixel(game)/2) && 
-    !(ball.ball_coordonates).dx-(400- !(ball.ball_size)) - !(ball.ball_size) > (paddle_x(game)- paddle_size_pixel(game)/2) &&
-  (!(ball.ball_coordonates).dy >= 755)
-  then (
-  ball.ball_velocity := make_vec2(1* !(game.game_speed)/3, -1* !(game.game_speed)/3)
-  )
-  else
-  ();
-  print_int(!(ball.ball_velocity).dx);print_int(!(ball.ball_velocity).dy);
-)
-;;
+  ;;
 
 
 (* lire l'énoncé choix à faire
