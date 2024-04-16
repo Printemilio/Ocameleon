@@ -653,7 +653,7 @@ let ball_modif_speed_sign(game, ball, sv : t_camlbrick * t_ball * t_vec2) : unit
   Cette fonction verifie si une entité est dans un cercle
 @param cx abscisse x du cercle que l'on teste
 @param cy ordonnée y du cercle que l'on teste
-@param rad 
+@param rad radiant du cercle que l'on teste
 @param x coordonnée x de l'entité a tester
 @param y coordonnée y de l'entité a tester
 @return booléen en fonction de si l'entité est à l'interieur du cercle
@@ -666,13 +666,12 @@ let is_inside_circle(cx,cy,rad, x, y : int * int * int * int * int) : bool =
 
 (**
   Cette fonction verifie si une entité est dans un quadrilatère
-@param x1 
-@param y1 
-@param x2 
-@param y2 
-@param x2 
-@param x
-@param y
+@param x1 première coordonnée limite x du quadrilatère
+@param y1 première coordonnée limite y du quadrilatère
+@param x2 deuxième coordonnée limite x du quadrilatère
+@param y2 deuxième coordonnée limite y du quadrilatère
+@param x coordonnée x de l'entité a tester
+@param y coordonnée y de l'entité a tester
 @return booléen en fonction de si l'entité est à l'interieur du quadrilatère
 @author Emilio Decaix  
 *)
